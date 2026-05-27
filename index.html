@@ -35,6 +35,7 @@ h2{
     text-align:center;
 }
 
+/* DISPLAY */
 #display{
     width:100%;
     min-height:180px;
@@ -46,6 +47,7 @@ h2{
     font-family:"Noto Sans", sans-serif;
 }
 
+/* KEYBOARD */
 .keyboard{
     margin-top:14px;
     display:flex;
@@ -86,6 +88,14 @@ h2{
 .special{ background:#dee2e6; }
 .action{ background:#4dabf7; color:#fff; }
 .lock{ background:#228be6; color:#fff; }
+
+/* FOOTER */
+.footer{
+    margin-top:14px;
+    font-size:11px;
+    text-align:center;
+    color:#666;
+}
 
 </style>
 </head>
@@ -180,12 +190,16 @@ h2{
 <button class="key special" id="shift">Shift</button>
 <button class="key special" id="caps">Caps</button>
 <button class="key" id="space">Space</button>
-
 <button class="key special" id="enter">Enter</button>
 <button class="key action" id="copy">Copy</button>
 
 </div>
 
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
 </div>
 
 </div>
@@ -257,6 +271,7 @@ async function copy(){
     await navigator.clipboard.writeText(buffer);
 }
 
+/* EVENTS */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
