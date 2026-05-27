@@ -201,38 +201,24 @@ h2{
 
 <script>
 
-/* ===== STATE ===== */
+/* =========================
+   STATE
+========================= */
 let buffer = "";
 let shift = false;
 
 const display = document.getElementById("display");
 
-/* ===== RENDER ===== */
+/* =========================
+   RENDER
+========================= */
 function render(){
     display.textContent = buffer || " ";
 }
 
-/* ===== INSERT ===== */
-function insert(ch){
-    buffer += ch;
-    shift = false;
-    updateKeys();
-    render();
-}
-
-/* ===== BACKSPACE ===== */
-function backspace(){
-    buffer = buffer.slice(0, -1);
-    render();
-}
-
-/* ===== SHIFT ===== */
-function toggleShift(){
-    shift = !shift;
-    updateKeys();
-}
-
-/* ===== UPDATE KEYS ===== */
+/* =========================
+   UPDATE KEYS (SHIFT UI)
+========================= */
 function updateKeys(){
 
     document.querySelectorAll(".letter").forEach(btn=>{
@@ -244,7 +230,43 @@ function updateKeys(){
         .classList.toggle("lock", shift);
 }
 
-/* ===== COPY ===== */
+/* =========================
+   INSERT
+========================= */
+function insert(btn){
+
+    const ch = shift
+        ? btn.dataset.upp
+        : btn.dataset.low;
+
+    buffer += ch;
+
+    /* Shift is single-use */
+    shift = false;
+
+    updateKeys();
+    render();
+}
+
+/* =========================
+   BACKSPACE
+========================= */
+function backspace(){
+    buffer = buffer.slice(0, -1);
+    render();
+}
+
+/* =========================
+   SHIFT
+========================= */
+function toggleShift(){
+    shift = !shift;
+    updateKeys();
+}
+
+/* =========================
+   COPY
+========================= */
 async function copy(){
     try{
         await navigator.clipboard.writeText(buffer);
@@ -253,12 +275,11 @@ async function copy(){
     }
 }
 
-/* ===== EVENTS ===== */
+/* =========================
+   EVENTS
+========================= */
 document.querySelectorAll(".letter").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-        const ch = shift ? btn.dataset.upp : btn.dataset.low;
-        insert(ch);
-    });
+    btn.addEventListener("click", ()=>insert(btn));
 });
 
 document.getElementById("back")
@@ -268,17 +289,24 @@ document.getElementById("shift")
 .addEventListener("click", toggleShift);
 
 document.getElementById("space")
-.addEventListener("click", ()=>insert(" "));
+.addEventListener("click", ()=>insert({
+    dataset:{low:" ", upp:" "}
+}));
 
 document.getElementById("enter")
-.addEventListener("click", ()=>insert("\n"));
+.addEventListener("click", ()=>insert({
+    dataset:{low:"\n", upp:"\n"}
+}));
 
 document.getElementById("tab")
-.addEventListener("click", ()=>insert("    "));
+.addEventListener("click", ()=>insert({
+    dataset:{low:"    ", upp:"    "}
+}));
 
 document.getElementById("copy")
 .addEventListener("click", copy);
 
+/* INIT */
 updateKeys();
 render();
 
