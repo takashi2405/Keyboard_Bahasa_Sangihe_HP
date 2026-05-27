@@ -35,7 +35,7 @@ h2{
     text-align:center;
 }
 
-/* DISPLAY AREA（textarea廃止） */
+/* DISPLAY */
 #display{
     width:100%;
     min-height:180px;
@@ -51,20 +51,6 @@ h2{
     word-break:break-word;
 
     font-family:"Noto Sans", sans-serif;
-
-    outline:none;
-}
-
-/* cursor（疑似カーソル） */
-.cursor{
-    display:inline-block;
-    width:2px;
-    background:black;
-    animation:blink 1s step-end infinite;
-}
-
-@keyframes blink{
-    50%{opacity:0;}
 }
 
 /* KEYBOARD */
@@ -99,6 +85,7 @@ h2{
     display:flex;
     align-items:center;
     justify-content:center;
+    user-select:none;
 }
 
 .key:active{
@@ -198,12 +185,14 @@ h2{
 
 <!-- ROW 6 -->
 <div class="row row6">
+
 <button class="key special" id="shift">Shift</button>
 <button class="key" id="space">Space</button>
 <button class="key special" id="enter">Enter</button>
 <button class="key">,</button>
 <button class="key">.</button>
 <button class="key action" id="copy">Copy</button>
+
 </div>
 
 </div>
@@ -216,17 +205,18 @@ h2{
 let buffer = "";
 let shift = false;
 
-/* ===== DISPLAY ===== */
 const display = document.getElementById("display");
 
+/* ===== RENDER ===== */
 function render(){
     display.textContent = buffer || " ";
 }
 
 /* ===== INSERT ===== */
 function insert(ch){
-    buffer += shift ? ch.toUpperCase() : ch;
+    buffer += ch;
     shift = false;
+    updateKeys();
     render();
 }
 
@@ -239,6 +229,19 @@ function backspace(){
 /* ===== SHIFT ===== */
 function toggleShift(){
     shift = !shift;
+    updateKeys();
+}
+
+/* ===== UPDATE KEYS ===== */
+function updateKeys(){
+
+    document.querySelectorAll(".letter").forEach(btn=>{
+        btn.textContent =
+            shift ? btn.dataset.upp : btn.dataset.low;
+    });
+
+    document.getElementById("shift")
+        .classList.toggle("lock", shift);
 }
 
 /* ===== COPY ===== */
@@ -276,6 +279,7 @@ document.getElementById("tab")
 document.getElementById("copy")
 .addEventListener("click", copy);
 
+updateKeys();
 render();
 
 </script>
