@@ -17,7 +17,7 @@ body{
     margin:0;
     padding:12px;
     background:#f0f2f5;
-    font-family:"Noto Sans", sans-serif;
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
 .container{
@@ -33,8 +33,10 @@ h2{
     margin:0 0 10px 0;
     font-size:20px;
     text-align:center;
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
+/* DISPLAY */
 #display{
     width:100%;
     min-height:180px;
@@ -43,9 +45,10 @@ h2{
     border-radius:10px;
     font-size:24px;
     white-space:pre-wrap;
-    font-family:"Noto Sans", sans-serif;
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
+/* KEYBOARD */
 .keyboard{
     margin-top:14px;
     display:flex;
@@ -62,6 +65,7 @@ h2{
     grid-template-columns:repeat(10, 1fr);
 }
 
+/* Shift / Caps / Space / . / Enter / Copy */
 .row6{
     grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr 1.4fr;
 }
@@ -77,6 +81,8 @@ h2{
     display:flex;
     align-items:center;
     justify-content:center;
+
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
 .key:active{
@@ -92,6 +98,7 @@ h2{
     font-size:11px;
     text-align:center;
     color:#666;
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
 </style>
@@ -183,10 +190,8 @@ h2{
 <button class="key special" id="shift">Shift</button>
 <button class="key special" id="caps">Caps</button>
 
-<!-- Space (動的に Tab / Space 切替) -->
 <button class="key" id="space">Space</button>
 
-<!-- ピリオド -->
 <button class="key letter" data-low="." data-upp=">">.</button>
 
 <button class="key special" id="enter">Enter</button>
@@ -197,7 +202,7 @@ h2{
 </div>
 
 <div class="footer">
-© 2026 Takashi NAKAGAWA
+© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
 </div>
 
 </div>
@@ -216,7 +221,7 @@ function isUpper(){
 }
 
 function render(){
-    display.textContent = buffer || " ";
+    display.textContent = buffer;
 }
 
 function updateKeys(){
@@ -230,7 +235,6 @@ function updateKeys(){
     document.getElementById("shift").classList.toggle("lock", shift);
     document.getElementById("caps").classList.toggle("lock", caps);
 
-    /* ★ SPACE/TAB 切替（重要） */
     spaceBtn.textContent = upper ? "Tab" : "Space";
 }
 
@@ -261,11 +265,8 @@ function toggleCaps(){
 }
 
 function insertSpace(){
-
     buffer += isUpper() ? "\t" : " ";
-
     shift = false;
-
     updateKeys();
     render();
 }
