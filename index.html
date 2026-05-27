@@ -71,7 +71,7 @@ h2{
 }
 
 .row6{
-    grid-template-columns:1.2fr 2.4fr 1fr 1fr 1.5fr 1.5fr;
+    grid-template-columns:1.2fr 1.2fr 2.6fr 1.4fr 1.4fr;
 }
 
 .key{
@@ -80,7 +80,7 @@ h2{
     border-radius:10px;
     background:#fff;
     box-shadow:0 2px 4px rgba(0,0,0,0.12);
-    font-size:20px;
+    font-size:18px;
     font-weight:600;
     display:flex;
     align-items:center;
@@ -111,7 +111,6 @@ h2{
 
 <!-- ROW 1 -->
 <div class="row row10">
-
 <button class="key letter" data-low="́" data-upp="~">́</button>
 <button class="key letter" data-low="-" data-upp="_">-</button>
 <button class="key letter" data-low="=" data-upp="+">=</button>
@@ -121,9 +120,7 @@ h2{
 <button class="key letter" data-low=";" data-upp=":">;</button>
 <button class="key letter" data-low="'" data-upp='"'>'</button>
 <button class="key letter" data-low="/" data-upp="?">/</button>
-
 <button class="key special" id="back">⌫</button>
-
 </div>
 
 <!-- ROW 2 -->
@@ -170,7 +167,9 @@ h2{
 
 <!-- ROW 5 -->
 <div class="row row10">
+
 <button class="key letter" data-low="̣" data-upp="̣">◌&#803;</button>
+
 <button class="key letter" data-low="z" data-upp="Z">z</button>
 <button class="key letter" data-low="x" data-upp="X">x</button>
 <button class="key letter" data-low="c" data-upp="C">c</button>
@@ -180,17 +179,19 @@ h2{
 <button class="key letter" data-low="m" data-upp="M">m</button>
 <button class="key letter" data-low="l᷊" data-upp="L᷊">l᷊</button>
 
-<button class="key special" id="tab">Tab</button>
+<!-- , . moved here -->
+<button class="key letter" data-low="," data-upp="<">,</button>
+<button class="key letter" data-low="." data-upp=">">.</button>
+
 </div>
 
 <!-- ROW 6 -->
 <div class="row row6">
 
 <button class="key special" id="shift">Shift</button>
+<button class="key special" id="caps">Caps</button>
 <button class="key" id="space">Space</button>
 <button class="key special" id="enter">Enter</button>
-<button class="key">,</button>
-<button class="key">.</button>
 <button class="key action" id="copy">Copy</button>
 
 </div>
@@ -201,72 +202,71 @@ h2{
 
 <script>
 
-/* =========================
-   STATE
-========================= */
+/* ================= STATE ================= */
 let buffer = "";
 let shift = false;
+let caps = false;
 
 const display = document.getElementById("display");
 
-/* =========================
-   RENDER
-========================= */
+/* ================= RENDER ================= */
 function render(){
     display.textContent = buffer || " ";
 }
 
-/* =========================
-   UPDATE KEYS (SHIFT UI)
-========================= */
+/* ================= KEY UPDATE ================= */
 function updateKeys(){
 
+    const upper = shift || caps;
+
     document.querySelectorAll(".letter").forEach(btn=>{
-        btn.textContent =
-            shift ? btn.dataset.upp : btn.dataset.low;
+        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
     });
 
     document.getElementById("shift")
         .classList.toggle("lock", shift);
+
+    document.getElementById("caps")
+        .classList.toggle("lock", caps);
 }
 
-/* =========================
-   INSERT
-========================= */
+/* ================= INSERT ================= */
 function insert(btn){
 
-    const ch = shift
+    const upper = shift || caps;
+
+    const ch = upper
         ? btn.dataset.upp
         : btn.dataset.low;
 
     buffer += ch;
 
-    /* Shift is single-use */
+    /* shiftは1回で解除 */
     shift = false;
 
     updateKeys();
     render();
 }
 
-/* =========================
-   BACKSPACE
-========================= */
+/* ================= BACKSPACE ================= */
 function backspace(){
     buffer = buffer.slice(0, -1);
     render();
 }
 
-/* =========================
-   SHIFT
-========================= */
+/* ================= SHIFT ================= */
 function toggleShift(){
     shift = !shift;
     updateKeys();
 }
 
-/* =========================
-   COPY
-========================= */
+/* ================= CAPS ================= */
+function toggleCaps(){
+    caps = !caps;
+    updateKeys();
+}
+
+/* ================= COPY ================= */
 async function copy(){
     try{
         await navigator.clipboard.writeText(buffer);
@@ -275,9 +275,16 @@ async function copy(){
     }
 }
 
-/* =========================
-   EVENTS
-========================= */
+/* ================= SPACE / TAB ================= */
+function insertSpaceOrTab(){
+    const isTab = shift || caps;
+    buffer += isTab ? "    " : " ";
+    shift = false;
+    updateKeys();
+    render();
+}
+
+/* ================= EVENTS ================= */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
@@ -288,25 +295,21 @@ document.getElementById("back")
 document.getElementById("shift")
 .addEventListener("click", toggleShift);
 
+document.getElementById("caps")
+.addEventListener("click", toggleCaps);
+
 document.getElementById("space")
-.addEventListener("click", ()=>insert({
-    dataset:{low:" ", upp:" "}
-}));
+.addEventListener("click", insertSpaceOrTab);
 
 document.getElementById("enter")
-.addEventListener("click", ()=>insert({
-    dataset:{low:"\n", upp:"\n"}
-}));
-
-document.getElementById("tab")
-.addEventListener("click", ()=>insert({
-    dataset:{low:"    ", upp:"    "}
-}));
+.addEventListener("click", ()=>{
+    buffer += "\n";
+    render();
+});
 
 document.getElementById("copy")
 .addEventListener("click", copy);
 
-/* INIT */
 updateKeys();
 render();
 
