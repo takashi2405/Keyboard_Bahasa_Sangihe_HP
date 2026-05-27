@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Keyboard Bahasa Sangihe Mobile</title>
+<title>Keyboard Bahasa Sangihe</title>
 
 <style>
 
@@ -21,33 +21,50 @@ body{
 }
 
 .container{
-    width:100%;
     max-width:480px;
     margin:0 auto;
-    background:white;
+    background:#fff;
     border-radius:12px;
     padding:14px;
     box-shadow:0 4px 12px rgba(0,0,0,0.12);
 }
 
 h2{
-    margin:0 0 12px 0;
+    margin:0 0 10px 0;
     font-size:20px;
-    color:#333;
     text-align:center;
 }
 
-/* TEXTAREA */
-#textarea{
+/* DISPLAY AREA（textarea廃止） */
+#display{
     width:100%;
-    height:180px;
+    min-height:180px;
     padding:12px;
+
     border:2px solid #ccd0d5;
     border-radius:10px;
-    resize:none;
+
     font-size:24px;
     line-height:1.5;
+
+    white-space:pre-wrap;
+    word-break:break-word;
+
     font-family:"Noto Sans", sans-serif;
+
+    outline:none;
+}
+
+/* cursor（疑似カーソル） */
+.cursor{
+    display:inline-block;
+    width:2px;
+    background:black;
+    animation:blink 1s step-end infinite;
+}
+
+@keyframes blink{
+    50%{opacity:0;}
 }
 
 /* KEYBOARD */
@@ -79,43 +96,18 @@ h2{
     box-shadow:0 2px 4px rgba(0,0,0,0.12);
     font-size:20px;
     font-weight:600;
-    font-family:"Noto Sans", sans-serif;
     display:flex;
     align-items:center;
     justify-content:center;
-    user-select:none;
-    cursor:pointer;
 }
 
 .key:active{
     transform:scale(0.97);
-    background:#e9ecef;
 }
 
-.action{
-    background:#4dabf7;
-    color:white;
-}
-
-.lock{
-    background:#228be6;
-    color:white;
-}
-
-.special{
-    background:#dee2e6;
-}
-
-.no-update{
-    font-size:24px;
-}
-
-.footer{
-    margin-top:12px;
-    text-align:center;
-    font-size:11px;
-    color:#666;
-}
+.special{ background:#dee2e6; }
+.action{ background:#4dabf7; color:#fff; }
+.lock{ background:#228be6; color:#fff; }
 
 </style>
 </head>
@@ -126,8 +118,7 @@ h2{
 
 <h2>Keyboard Bahasa Sangihe</h2>
 
-<textarea id="textarea"
-placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
+<div id="display"></div>
 
 <div class="keyboard">
 
@@ -144,13 +135,12 @@ placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 <button class="key letter" data-low="'" data-upp='"'>'</button>
 <button class="key letter" data-low="/" data-upp="?">/</button>
 
-<button class="key special" id="backBtn">⌫</button>
+<button class="key special" id="back">⌫</button>
 
 </div>
 
 <!-- ROW 2 -->
 <div class="row row10">
-
 <button class="key letter" data-low="1" data-upp="!">1</button>
 <button class="key letter" data-low="2" data-upp="@">2</button>
 <button class="key letter" data-low="3" data-upp="#">3</button>
@@ -161,12 +151,10 @@ placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 <button class="key letter" data-low="8" data-upp="*">8</button>
 <button class="key letter" data-low="9" data-upp="(">9</button>
 <button class="key letter" data-low="0" data-upp=")">0</button>
-
 </div>
 
 <!-- ROW 3 -->
 <div class="row row10">
-
 <button class="key letter" data-low="q" data-upp="Q">q</button>
 <button class="key letter" data-low="w" data-upp="W">w</button>
 <button class="key letter" data-low="e" data-upp="E">e</button>
@@ -177,12 +165,10 @@ placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 <button class="key letter" data-low="i" data-upp="I">i</button>
 <button class="key letter" data-low="o" data-upp="O">o</button>
 <button class="key letter" data-low="p" data-upp="P">p</button>
-
 </div>
 
 <!-- ROW 4 -->
 <div class="row row10">
-
 <button class="key letter" data-low="a" data-upp="A">a</button>
 <button class="key letter" data-low="s" data-upp="S">s</button>
 <button class="key letter" data-low="ĕ" data-upp="Ĕ">ĕ</button>
@@ -193,13 +179,11 @@ placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 <button class="key letter" data-low="j" data-upp="J">j</button>
 <button class="key letter" data-low="k" data-upp="K">k</button>
 <button class="key letter" data-low="l" data-upp="L">l</button>
-
 </div>
 
 <!-- ROW 5 -->
 <div class="row row10">
-
-<button class="key letter no-update" data-low="̣" data-upp="̣">◌&#803;</button>
+<button class="key letter" data-low="̣" data-upp="̣">◌&#803;</button>
 <button class="key letter" data-low="z" data-upp="Z">z</button>
 <button class="key letter" data-low="x" data-upp="X">x</button>
 <button class="key letter" data-low="c" data-upp="C">c</button>
@@ -209,182 +193,90 @@ placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 <button class="key letter" data-low="m" data-upp="M">m</button>
 <button class="key letter" data-low="l᷊" data-upp="L᷊">l᷊</button>
 
-<button class="key special" id="tabBtn">Tab</button>
-
+<button class="key special" id="tab">Tab</button>
 </div>
 
 <!-- ROW 6 -->
 <div class="row row6">
-
-<button class="key special" id="shiftBtn">Shift</button>
-<button class="key" id="spaceBtn">Space</button>
-<button class="key letter" data-low="," data-upp="<">,</button>
-<button class="key letter" data-low="." data-upp=">">.</button>
-<button class="key special" id="enterBtn">Enter</button>
-<button class="key action" id="copyBtn">Copy</button>
-
+<button class="key special" id="shift">Shift</button>
+<button class="key" id="space">Space</button>
+<button class="key special" id="enter">Enter</button>
+<button class="key">,</button>
+<button class="key">.</button>
+<button class="key action" id="copy">Copy</button>
 </div>
 
-</div>
-
-<div class="footer">
-© 2026 Takashi NAKAGAWA · GPLv3
 </div>
 
 </div>
 
 <script>
 
-const textarea =
-    document.getElementById('textarea');
+/* ===== STATE ===== */
+let buffer = "";
+let shift = false;
 
-/* ★ 解決策A：OSキーボード禁止 */
-textarea.readOnly = true;
+/* ===== DISPLAY ===== */
+const display = document.getElementById("display");
 
-/* フォーカスされても出さない */
-textarea.addEventListener('focus', e => {
-    e.target.blur();
-});
-
-let isShift = false;
-
-const segmenter =
-    new Intl.Segmenter('id',{granularity:'grapheme'});
-
-/* INSERT */
-function insertText(text){
-
-    textarea.setRangeText(
-        text,
-        textarea.selectionStart,
-        textarea.selectionEnd,
-        'end'
-    );
-
-    textarea.focus();
+function render(){
+    display.textContent = buffer || " ";
 }
 
-/* DELETE */
-function deleteChar(){
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if(start !== end){
-
-        textarea.setRangeText('', start, end, 'start');
-        return;
-    }
-
-    const before = textarea.value.slice(0,start);
-    const after = textarea.value.slice(end);
-
-    const seg = [...segmenter.segment(before)];
-
-    if(seg.length) seg.pop();
-
-    const newBefore = seg.map(s=>s.segment).join('');
-
-    textarea.value = newBefore + after;
-
-    const pos = newBefore.length;
-
-    textarea.selectionStart = pos;
-    textarea.selectionEnd = pos;
-
-    textarea.focus();
+/* ===== INSERT ===== */
+function insert(ch){
+    buffer += shift ? ch.toUpperCase() : ch;
+    shift = false;
+    render();
 }
 
-/* LABEL UPDATE */
-function updateLabels(){
-
-    document.querySelectorAll('.key.letter')
-    .forEach(btn=>{
-
-        if(btn.classList.contains('no-update')) return;
-
-        btn.textContent =
-            isShift ? btn.dataset.upp : btn.dataset.low;
-    });
-
-    document.getElementById('shiftBtn')
-        .classList.toggle('lock', isShift);
+/* ===== BACKSPACE ===== */
+function backspace(){
+    buffer = buffer.slice(0, -1);
+    render();
 }
 
-/* TYPE */
-function typeLetter(btn){
-
-    const char =
-        isShift ? btn.dataset.upp : btn.dataset.low;
-
-    insertText(char);
-
-    if(isShift){
-        isShift = false;
-        updateLabels();
-    }
-}
-
-/* SHIFT */
+/* ===== SHIFT ===== */
 function toggleShift(){
-
-    isShift = !isShift;
-    updateLabels();
+    shift = !shift;
 }
 
-/* COPY */
-async function copyText(){
-
-    const text = textarea.value;
-    if(!text) return;
-
-    const html =
-        `<div style="font-family:'Noto Sans',sans-serif; white-space:pre-wrap;">`
-        + text.replace(/&/g,'&amp;')
-              .replace(/</g,'&lt;')
-              .replace(/>/g,'&gt;')
-        + `</div>`;
-
+/* ===== COPY ===== */
+async function copy(){
     try{
-
-        const item = new ClipboardItem({
-
-            'text/plain': new Blob([text], {type:'text/plain'}),
-            'text/html': new Blob([html], {type:'text/html'})
-        });
-
-        await navigator.clipboard.write([item]);
-
+        await navigator.clipboard.writeText(buffer);
     }catch(e){
         console.error(e);
     }
 }
 
-/* EVENTS */
-document.querySelectorAll('.key.letter')
-.forEach(btn=>{
-    btn.addEventListener('click', ()=>typeLetter(btn));
+/* ===== EVENTS ===== */
+document.querySelectorAll(".letter").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        const ch = shift ? btn.dataset.upp : btn.dataset.low;
+        insert(ch);
+    });
 });
 
-document.getElementById('backBtn')
-.addEventListener('click', deleteChar);
+document.getElementById("back")
+.addEventListener("click", backspace);
 
-document.getElementById('tabBtn')
-.addEventListener('click', ()=>insertText('    '));
+document.getElementById("shift")
+.addEventListener("click", toggleShift);
 
-document.getElementById('enterBtn')
-.addEventListener('click', ()=>insertText('\n'));
+document.getElementById("space")
+.addEventListener("click", ()=>insert(" "));
 
-document.getElementById('spaceBtn')
-.addEventListener('click', ()=>insertText(' '));
+document.getElementById("enter")
+.addEventListener("click", ()=>insert("\n"));
 
-document.getElementById('shiftBtn')
-.addEventListener('click', toggleShift);
+document.getElementById("tab")
+.addEventListener("click", ()=>insert("    "));
 
-document.getElementById('copyBtn')
-.addEventListener('click', copyText);
+document.getElementById("copy")
+.addEventListener("click", copy);
 
-updateLabels();
+render();
 
 </script>
 
