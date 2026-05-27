@@ -62,7 +62,6 @@ h2{
     grid-template-columns:repeat(10, 1fr);
 }
 
-/* 6列固定（Shift / Caps / Space / . / Enter / Copy） */
 .row6{
     grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr 1.4fr;
 }
@@ -166,9 +165,7 @@ h2{
 
 <!-- ROW 5 -->
 <div class="row row10">
-
 <button class="key letter" data-low="̣" data-upp="̣">◌&#803;</button>
-
 <button class="key letter" data-low="z" data-upp="Z">z</button>
 <button class="key letter" data-low="x" data-upp="X">x</button>
 <button class="key letter" data-low="c" data-upp="C">c</button>
@@ -178,9 +175,6 @@ h2{
 <button class="key letter" data-low="m" data-upp="M">m</button>
 <button class="key letter" data-low="l᷊" data-upp="L᷊">l᷊</button>
 <button class="key letter" data-low="," data-upp="<">,</button>
-
-<!-- ★ ピリオドは完全削除 -->
-
 </div>
 
 <!-- ROW 6 -->
@@ -189,9 +183,10 @@ h2{
 <button class="key special" id="shift">Shift</button>
 <button class="key special" id="caps">Caps</button>
 
+<!-- Space (動的に Tab / Space 切替) -->
 <button class="key" id="space">Space</button>
 
-<!-- ★ ピリオドをここへ -->
+<!-- ピリオド -->
 <button class="key letter" data-low="." data-upp=">">.</button>
 
 <button class="key special" id="enter">Enter</button>
@@ -201,7 +196,6 @@ h2{
 
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
 © 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
 </div>
@@ -215,6 +209,11 @@ let shift = false;
 let caps = false;
 
 const display = document.getElementById("display");
+const spaceBtn = document.getElementById("space");
+
+function isUpper(){
+    return shift || caps;
+}
 
 function render(){
     display.textContent = buffer || " ";
@@ -222,7 +221,7 @@ function render(){
 
 function updateKeys(){
 
-    const upper = shift || caps;
+    const upper = isUpper();
 
     document.querySelectorAll(".letter").forEach(btn=>{
         btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
@@ -230,12 +229,14 @@ function updateKeys(){
 
     document.getElementById("shift").classList.toggle("lock", shift);
     document.getElementById("caps").classList.toggle("lock", caps);
+
+    /* ★ SPACE/TAB 切替（重要） */
+    spaceBtn.textContent = upper ? "Tab" : "Space";
 }
 
 function insert(btn){
 
-    const upper = shift || caps;
-
+    const upper = isUpper();
     buffer += upper ? btn.dataset.upp : btn.dataset.low;
 
     shift = false;
@@ -259,11 +260,9 @@ function toggleCaps(){
     updateKeys();
 }
 
-function insertSpaceOrTab(){
+function insertSpace(){
 
-    const upper = shift || caps;
-
-    buffer += upper ? "\t" : " ";
+    buffer += isUpper() ? "\t" : " ";
 
     shift = false;
 
@@ -271,11 +270,6 @@ function insertSpaceOrTab(){
     render();
 }
 
-async function copy(){
-    await navigator.clipboard.writeText(buffer);
-}
-
-/* EVENTS */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
@@ -283,14 +277,16 @@ document.querySelectorAll(".letter").forEach(btn=>{
 document.getElementById("back").onclick = backspace;
 document.getElementById("shift").onclick = toggleShift;
 document.getElementById("caps").onclick = toggleCaps;
-document.getElementById("space").onclick = insertSpaceOrTab;
+document.getElementById("space").onclick = insertSpace;
 
 document.getElementById("enter").onclick = ()=>{
     buffer += "\n";
     render();
 };
 
-document.getElementById("copy").onclick = copy;
+document.getElementById("copy").onclick = async ()=>{
+    await navigator.clipboard.writeText(buffer);
+};
 
 updateKeys();
 render();
