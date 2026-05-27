@@ -2,180 +2,153 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Keyboard Bahasa Sangihe</title>
+<title>Keyboard Bahasa Sangihe Mobile</title>
 
 <style>
 
-body{
-    font-family:"Noto Sans", Arial, sans-serif;
-    padding:20px;
-    background:#f0f2f5;
-}
-
-.container{
-    max-width:950px;
-    margin:0 auto;
-    background:white;
-    padding:20px;
-    border-radius:8px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* HEADER */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-
-h2{
-    margin:0;
-    font-size:22px;
-    color:#333;
-}
-
-/* FONT SELECT */
-.fontBox{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:#f8f9fa;
-    border:1px solid #ced4da;
-    border-radius:10px;
-    padding:6px 10px;
-    font-size:14px;
-}
-
-.fontBox label{
-    display:flex;
-    align-items:center;
-    gap:5px;
-    cursor:pointer;
-}
-
-.fontBox input{
-    accent-color:#228be6;
-}
-
-/* OUTPUT */
-#textarea{
-    width:100%;
-    height:140px;
-    padding:12px;
+*{
     box-sizing:border-box;
-    border:2px solid #ccd0d5;
-    border-radius:6px;
-    resize:vertical;
-
-    font-size:24px;
-    line-height:1.5;
-
-    font-family:Cambria, serif;
+    -webkit-tap-highlight-color:transparent;
 }
 
-/* KEYBOARD */
-.keyboard{
-    margin-top:20px;
-    background:#e9ecef;
-    padding:10px;
-    border-radius:6px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+body{
+    margin:0;
+    padding:12px;
+    background:#f0f2f5;
 
     font-family:"Noto Sans", sans-serif;
 }
 
-.row{
+.container{
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
+
+    background:white;
+    border-radius:12px;
+
+    padding:14px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+}
+
+h2{
+    margin:0 0 12px 0;
+
+    font-size:20px;
+    color:#333;
+
+    text-align:center;
+}
+
+/* TEXTAREA */
+
+#textarea{
+    width:100%;
+    height:180px;
+
+    padding:12px;
+
+    border:2px solid #ccd0d5;
+    border-radius:10px;
+
+    resize:none;
+
+    font-size:24px;
+    line-height:1.5;
+
+    font-family:"Noto Sans", sans-serif;
+}
+
+/* KEYBOARD */
+
+.keyboard{
+    margin-top:14px;
+
     display:flex;
+    flex-direction:column;
     gap:6px;
 }
 
+.row{
+    display:grid;
+    gap:6px;
+}
+
+/* 10 KEYS */
+.row10{
+    grid-template-columns:repeat(10, 1fr);
+}
+
+/* 6 KEYS */
+.row6{
+    grid-template-columns:
+        1.2fr
+        2.4fr
+        1fr
+        1fr
+        1.5fr
+        1.5fr;
+}
+
 .key{
-    flex:1;
-    height:50px;
+    height:54px;
 
-    border:1px solid #adb5bd;
-    border-radius:4px;
+    border:none;
+    border-radius:10px;
 
-    background:white;
-    cursor:pointer;
+    background:#ffffff;
 
-    font-size:18px;
-    font-weight:bold;
+    box-shadow:
+        0 2px 4px rgba(0,0,0,0.12);
+
+    font-size:20px;
+    font-weight:600;
+
+    font-family:"Noto Sans", sans-serif;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
     user-select:none;
-}
 
-.key:hover{
-    background:#f1f3f5;
+    cursor:pointer;
 }
 
 .key:active{
-    background:#dee2e6;
+    transform:scale(0.97);
+    background:#e9ecef;
 }
 
-.key.backspace{
-    flex:2;
-    background:#adb5bd;
-    color:white;
-}
-
-.key.enter{
-    flex:2.2;
-    background:#adb5bd;
-    color:white;
-}
-
-.key.tab{
-    flex:1.5;
-    background:#cfd4da;
-    font-size:14px;
-}
-
-.key.caps{
-    flex:1.2;
-    background:#cfd4da;
-    font-size:14px;
-}
-
-.key.shift{
-    flex:1.4;
-    background:#cfd4da;
-    font-size:14px;
-}
-
-.key.space{
-    flex:8;
-}
-
-.key.action{
+.action{
     background:#4dabf7;
     color:white;
 }
 
-.active-lock{
-    background:#228be6 !important;
-    color:white !important;
+.lock{
+    background:#228be6;
+    color:white;
+}
+
+.special{
+    background:#dee2e6;
 }
 
 .no-update{
-    font-size:22px;
+    font-size:24px;
 }
 
-/* FOOTER */
 .footer{
     margin-top:12px;
+
+    text-align:center;
+
     font-size:11px;
     color:#666;
-    text-align:center;
 }
 
 </style>
@@ -185,154 +158,281 @@ h2{
 
 <div class="container">
 
-<div class="header">
+<h2>Keyboard Bahasa Sangihe</h2>
 
-    <h2>Keyboard Bahasa Sangihe</h2>
-
-    <div class="fontBox">
-
-        <span>Font:</span>
-
-        <label>
-            <input type="radio" name="font" value="Cambria" checked>
-            Cambria (Serif)
-        </label>
-
-        <label>
-            <input type="radio" name="font" value="Calibri">
-            Calibri (Sans-serif)
-        </label>
-
-    </div>
-
-</div>
-
-<textarea id="textarea" placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
+<textarea id="textarea"
+placeholder="Bohẹko sini ... / Ketik di sini..."></textarea>
 
 <div class="keyboard">
 
 <!-- ROW 1 -->
-<div class="row">
+<div class="row row10">
 
-    <button class="key letter" data-low="́" data-upp="~">́</button>
+<button class="key letter"
+data-low="́"
+data-upp="~">́</button>
 
-    <button class="key letter" data-low="1" data-upp="!">1</button>
-    <button class="key letter" data-low="2" data-upp="@">2</button>
-    <button class="key letter" data-low="3" data-upp="#">3</button>
-    <button class="key letter" data-low="4" data-upp="$">4</button>
-    <button class="key letter" data-low="5" data-upp="%">5</button>
-    <button class="key letter" data-low="6" data-upp="^">6</button>
-    <button class="key letter" data-low="7" data-upp="&">7</button>
-    <button class="key letter" data-low="8" data-upp="*">8</button>
-    <button class="key letter" data-low="9" data-upp="(">9</button>
-    <button class="key letter" data-low="0" data-upp=")">0</button>
+<button class="key letter"
+data-low="-"
+data-upp="_">-</button>
 
-    <button class="key letter" data-low="-" data-upp="_">-</button>
-    <button class="key letter" data-low="=" data-upp="+">=</button>
+<button class="key letter"
+data-low="="
+data-upp="+">=</button>
 
-    <button class="key backspace" id="backBtn">Back</button>
+<button class="key letter"
+data-low="["
+data-upp="{">[</button>
+
+<button class="key letter"
+data-low="]"
+data-upp="}">]</button>
+
+<button class="key letter"
+data-low="\"
+data-upp="|">\</button>
+
+<button class="key letter"
+data-low=";"
+data-upp=":">;</button>
+
+<button class="key letter"
+data-low="'"
+data-upp='"'>'</button>
+
+<button class="key letter"
+data-low="/"
+data-upp="?">/</button>
+
+<button class="key special"
+id="backBtn">⌫</button>
 
 </div>
 
 <!-- ROW 2 -->
-<div class="row">
+<div class="row row10">
 
-    <button class="key tab" id="tabBtn">Tab</button>
+<button class="key letter"
+data-low="1"
+data-upp="!">1</button>
 
-    <button class="key letter" data-low="q" data-upp="Q">q</button>
-    <button class="key letter" data-low="w" data-upp="W">w</button>
-    <button class="key letter" data-low="e" data-upp="E">e</button>
-    <button class="key letter" data-low="r" data-upp="R">r</button>
-    <button class="key letter" data-low="t" data-upp="T">t</button>
-    <button class="key letter" data-low="y" data-upp="Y">y</button>
-    <button class="key letter" data-low="u" data-upp="U">u</button>
-    <button class="key letter" data-low="i" data-upp="I">i</button>
-    <button class="key letter" data-low="o" data-upp="O">o</button>
-    <button class="key letter" data-low="p" data-upp="P">p</button>
+<button class="key letter"
+data-low="2"
+data-upp="@">2</button>
 
-    <button class="key letter" data-low="[" data-upp="{">[</button>
-    <button class="key letter" data-low="]" data-upp="}">]</button>
+<button class="key letter"
+data-low="3"
+data-upp="#">3</button>
 
-    <!-- BACKSLASH -->
-    <button class="key letter" data-key="BACKSLASH">\</button>
+<button class="key letter"
+data-low="4"
+data-upp="$">4</button>
+
+<button class="key letter"
+data-low="5"
+data-upp="%">5</button>
+
+<button class="key letter"
+data-low="6"
+data-upp="^">6</button>
+
+<button class="key letter"
+data-low="7"
+data-upp="&">7</button>
+
+<button class="key letter"
+data-low="8"
+data-upp="*">8</button>
+
+<button class="key letter"
+data-low="9"
+data-upp="(">9</button>
+
+<button class="key letter"
+data-low="0"
+data-upp=")">0</button>
 
 </div>
 
 <!-- ROW 3 -->
-<div class="row">
+<div class="row row10">
 
-    <button class="key caps" id="capsBtn">Caps</button>
+<button class="key letter"
+data-low="q"
+data-upp="Q">q</button>
 
-    <button class="key letter" data-low="a" data-upp="A">a</button>
-    <button class="key letter" data-low="s" data-upp="S">s</button>
+<button class="key letter"
+data-low="w"
+data-upp="W">w</button>
 
-    <button class="key letter" data-low="ĕ" data-upp="Ĕ">ĕ</button>
+<button class="key letter"
+data-low="e"
+data-upp="E">e</button>
 
-    <button class="key letter" data-low="d" data-upp="D">d</button>
-    <button class="key letter" data-low="f" data-upp="F">f</button>
-    <button class="key letter" data-low="g" data-upp="G">g</button>
-    <button class="key letter" data-low="h" data-upp="H">h</button>
-    <button class="key letter" data-low="j" data-upp="J">j</button>
-    <button class="key letter" data-low="k" data-upp="K">k</button>
-    <button class="key letter" data-low="l" data-upp="L">l</button>
+<button class="key letter"
+data-low="r"
+data-upp="R">r</button>
 
-    <button class="key letter" data-low=";" data-upp=":">;</button>
-    <button class="key letter" data-low="'" data-upp='"'>'</button>
+<button class="key letter"
+data-low="t"
+data-upp="T">t</button>
 
-    <button class="key enter" id="enterBtn">Enter</button>
+<button class="key letter"
+data-low="y"
+data-upp="Y">y</button>
+
+<button class="key letter"
+data-low="u"
+data-upp="U">u</button>
+
+<button class="key letter"
+data-low="i"
+data-upp="I">i</button>
+
+<button class="key letter"
+data-low="o"
+data-upp="O">o</button>
+
+<button class="key letter"
+data-low="p"
+data-upp="P">p</button>
 
 </div>
 
 <!-- ROW 4 -->
-<div class="row">
+<div class="row row10">
 
-    <button class="key shift" id="shiftBtnL">Shift</button>
+<button class="key letter"
+data-low="a"
+data-upp="A">a</button>
 
-    <button class="key letter no-update" data-low="̣" data-upp="̣">◌&#803;</button>
+<button class="key letter"
+data-low="s"
+data-upp="S">s</button>
 
-    <button class="key letter" data-low="z" data-upp="Z">z</button>
-    <button class="key letter" data-low="x" data-upp="X">x</button>
-    <button class="key letter" data-low="c" data-upp="C">c</button>
-    <button class="key letter" data-low="v" data-upp="V">v</button>
-    <button class="key letter" data-low="b" data-upp="B">b</button>
-    <button class="key letter" data-low="n" data-upp="N">n</button>
-    <button class="key letter" data-low="m" data-upp="M">m</button>
+<button class="key letter"
+data-low="ĕ"
+data-upp="Ĕ">ĕ</button>
 
-    <button class="key letter" data-low="l᷊" data-upp="L᷊">l᷊</button>
+<button class="key letter"
+data-low="d"
+data-upp="D">d</button>
 
-    <button class="key letter" data-low="," data-upp="<">,</button>
-    <button class="key letter" data-low="." data-upp=">">.</button>
-    <button class="key letter" data-low="/" data-upp="?">/</button>
+<button class="key letter"
+data-low="f"
+data-upp="F">f</button>
 
-    <button class="key shift" id="shiftBtnR">Shift</button>
+<button class="key letter"
+data-low="g"
+data-upp="G">g</button>
+
+<button class="key letter"
+data-low="h"
+data-upp="H">h</button>
+
+<button class="key letter"
+data-low="j"
+data-upp="J">j</button>
+
+<button class="key letter"
+data-low="k"
+data-upp="K">k</button>
+
+<button class="key letter"
+data-low="l"
+data-upp="L">l</button>
 
 </div>
 
 <!-- ROW 5 -->
-<div class="row">
+<div class="row row10">
 
-    <button class="key space" id="spaceBtn">Space</button>
-    <button class="key action" id="copyBtn">Copy</button>
+<button class="key letter no-update"
+data-low="̣"
+data-upp="̣">◌&#803;</button>
+
+<button class="key letter"
+data-low="z"
+data-upp="Z">z</button>
+
+<button class="key letter"
+data-low="x"
+data-upp="X">x</button>
+
+<button class="key letter"
+data-low="c"
+data-upp="C">c</button>
+
+<button class="key letter"
+data-low="v"
+data-upp="V">v</button>
+
+<button class="key letter"
+data-low="b"
+data-upp="B">b</button>
+
+<button class="key letter"
+data-low="n"
+data-upp="N">n</button>
+
+<button class="key letter"
+data-low="m"
+data-upp="M">m</button>
+
+<button class="key letter"
+data-low="l᷊"
+data-upp="L᷊">l᷊</button>
+
+<button class="key special"
+id="tabBtn">Tab</button>
+
+</div>
+
+<!-- ROW 6 -->
+<div class="row row6">
+
+<button class="key special"
+id="shiftBtn">Shift</button>
+
+<button class="key"
+id="spaceBtn">Space</button>
+
+<button class="key letter"
+data-low=","
+data-upp="<">,</button>
+
+<button class="key letter"
+data-low="."
+data-upp=">">.</button>
+
+<button class="key special"
+id="enterBtn">Enter</button>
+
+<button class="key action"
+id="copyBtn">Copy</button>
 
 </div>
 
 </div>
 
-<footer class="footer">
-© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
-</footer>
+<div class="footer">
+© 2026 Takashi NAKAGAWA · GNU GPL v3.0 or later
+</div>
 
 </div>
 
 <script>
 
-const textarea = document.getElementById('textarea');
+const textarea =
+    document.getElementById('textarea');
 
-let isCaps = false;
 let isShift = false;
 
 const segmenter =
-    new Intl.Segmenter('id',{granularity:'grapheme'});
+    new Intl.Segmenter(
+        'id',
+        {granularity:'grapheme'}
+    );
 
 /* INSERT */
 function insertText(text){
@@ -350,8 +450,11 @@ function insertText(text){
 /* DELETE */
 function deleteChar(){
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
+    const start =
+        textarea.selectionStart;
+
+    const end =
+        textarea.selectionEnd;
 
     if(start !== end){
 
@@ -365,19 +468,27 @@ function deleteChar(){
         return;
     }
 
-    const before = textarea.value.slice(0,start);
-    const after = textarea.value.slice(end);
+    const before =
+        textarea.value.slice(0,start);
 
-    const seg = [...segmenter.segment(before)];
+    const after =
+        textarea.value.slice(end);
 
-    if(seg.length) seg.pop();
+    const seg =
+        [...segmenter.segment(before)];
+
+    if(seg.length){
+        seg.pop();
+    }
 
     const newBefore =
         seg.map(s=>s.segment).join('');
 
-    textarea.value = newBefore + after;
+    textarea.value =
+        newBefore + after;
 
-    const pos = newBefore.length;
+    const pos =
+        newBefore.length;
 
     textarea.selectionStart = pos;
     textarea.selectionEnd = pos;
@@ -385,67 +496,40 @@ function deleteChar(){
     textarea.focus();
 }
 
-/* LABEL UPDATE */
+/* UPDATE LABELS */
 function updateLabels(){
 
-    const upper = isCaps || isShift;
-
-    document.querySelectorAll('.key.letter')
+    document
+    .querySelectorAll('.key.letter')
     .forEach(btn=>{
 
-        /* KEEP DOT BELOW */
-        if(btn.classList.contains('no-update')){
-            return;
-        }
-
-        /* BACKSLASH SPECIAL */
-        if(btn.dataset.key === "BACKSLASH"){
-
-            btn.textContent =
-                upper ? "|" : "\\";
-
+        if(
+            btn.classList.contains(
+                'no-update'
+            )
+        ){
             return;
         }
 
         btn.textContent =
-            upper
+            isShift
             ? btn.dataset.upp
             : btn.dataset.low;
     });
 
-    document.getElementById('capsBtn')
-        .classList.toggle('active-lock',isCaps);
-
-    document.getElementById('shiftBtnL')
-        .classList.toggle('active-lock',isShift);
-
-    document.getElementById('shiftBtnR')
-        .classList.toggle('active-lock',isShift);
+    document
+    .getElementById('shiftBtn')
+    .classList.toggle(
+        'lock',
+        isShift
+    );
 }
 
-/* INPUT */
+/* TYPE */
 function typeLetter(btn){
 
-    /* BACKSLASH SPECIAL */
-    if(btn.dataset.key === "BACKSLASH"){
-
-        insertText(
-            (isCaps || isShift)
-            ? "|"
-            : "\\"
-        );
-
-        if(isShift){
-
-            isShift = false;
-            updateLabels();
-        }
-
-        return;
-    }
-
     const char =
-        (isCaps || isShift)
+        isShift
         ? btn.dataset.upp
         : btn.dataset.low;
 
@@ -458,19 +542,10 @@ function typeLetter(btn){
     }
 }
 
-/* TOGGLE */
-function toggleCaps(){
-
-    isCaps = !isCaps;
-    isShift = false;
-
-    updateLabels();
-}
-
+/* SHIFT */
 function toggleShift(){
 
     isShift = !isShift;
-    isCaps = false;
 
     updateLabels();
 }
@@ -482,15 +557,8 @@ async function copyText(){
 
     if(!text) return;
 
-    const font =
-        document.querySelector(
-            'input[name="font"]:checked'
-        ).value === "Cambria"
-        ? "Cambria, serif"
-        : "Calibri, sans-serif";
-
     const html =
-        `<div style="font-family:${font}; white-space:pre-wrap;">`
+        `<div style="font-family:'Noto Sans',sans-serif; white-space:pre-wrap;">`
         + text
             .replace(/&/g,'&amp;')
             .replace(/</g,'&lt;')
@@ -499,22 +567,29 @@ async function copyText(){
 
     try{
 
-        const item = new ClipboardItem({
+        const item =
+            new ClipboardItem({
 
             'text/plain':
                 new Blob(
                     [text],
-                    {type:'text/plain'}
+                    {
+                        type:'text/plain'
+                    }
                 ),
 
             'text/html':
                 new Blob(
                     [html],
-                    {type:'text/html'}
+                    {
+                        type:'text/html'
+                    }
                 )
         });
 
-        await navigator.clipboard.write([item]);
+        await navigator
+            .clipboard
+            .write([item]);
 
     }catch(e){
 
@@ -523,7 +598,9 @@ async function copyText(){
 }
 
 /* EVENTS */
-document.querySelectorAll('.key.letter')
+
+document
+.querySelectorAll('.key.letter')
 .forEach(btn=>{
 
     btn.addEventListener(
@@ -532,51 +609,47 @@ document.querySelectorAll('.key.letter')
     );
 });
 
-document.getElementById('backBtn')
-.addEventListener('click',deleteChar);
+document
+.getElementById('backBtn')
+.addEventListener(
+    'click',
+    deleteChar
+);
 
-document.getElementById('tabBtn')
+document
+.getElementById('tabBtn')
 .addEventListener(
     'click',
     ()=>insertText('    ')
 );
 
-document.getElementById('enterBtn')
+document
+.getElementById('enterBtn')
 .addEventListener(
     'click',
     ()=>insertText('\n')
 );
 
-document.getElementById('spaceBtn')
+document
+.getElementById('spaceBtn')
 .addEventListener(
     'click',
     ()=>insertText(' ')
 );
 
-document.getElementById('capsBtn')
-.addEventListener('click',toggleCaps);
+document
+.getElementById('shiftBtn')
+.addEventListener(
+    'click',
+    toggleShift
+);
 
-document.getElementById('shiftBtnL')
-.addEventListener('click',toggleShift);
-
-document.getElementById('shiftBtnR')
-.addEventListener('click',toggleShift);
-
-document.getElementById('copyBtn')
-.addEventListener('click',copyText);
-
-/* FONT SWITCH */
-document.querySelectorAll('input[name="font"]')
-.forEach(r=>{
-
-    r.addEventListener('change',e=>{
-
-        textarea.style.fontFamily =
-            e.target.value === "Cambria"
-            ? "Cambria, serif"
-            : "Calibri, sans-serif";
-    });
-});
+document
+.getElementById('copyBtn')
+.addEventListener(
+    'click',
+    copyText
+);
 
 /* INIT */
 updateLabels();
