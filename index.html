@@ -33,6 +33,7 @@ h2{
     margin:0 0 10px 0;
     font-size:20px;
     text-align:center;
+    font-family:"Noto Sans", Arial, sans-serif;
 }
 
 #display{
@@ -64,7 +65,7 @@ h2{
     background:#e9ecef;
 }
 
-.action-btn.copy{
+.copy-btn{
     background:#4dabf7;
     color:white;
 }
@@ -87,7 +88,7 @@ h2{
 }
 
 .row6{
-    grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr 1.4fr;
+    grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr; /* ★ Copy削除で5列 */
 }
 
 .key{
@@ -130,10 +131,10 @@ h2{
 
 <div id="display"></div>
 
-<!-- ★ 追加ボタン群 -->
+<!-- ACTION -->
 <div class="actions">
     <button class="action-btn" id="clear">Hapus semua</button>
-    <button class="action-btn copy" id="copyAll">Salin semua</button>
+    <button class="action-btn copy-btn" id="copyAll">Salin semua</button>
 </div>
 
 <div class="keyboard">
@@ -219,7 +220,6 @@ h2{
 <button class="key letter" data-low="." data-upp=">">.</button>
 
 <button class="key special" id="enter">Enter</button>
-<button class="key action">Copy</button>
 
 </div>
 
@@ -291,13 +291,11 @@ function insertSpace(){
     render();
 }
 
-/* ★ 全削除 */
 function clearAll(){
     buffer = "";
     render();
 }
 
-/* ★ 全コピー */
 async function copyAll(){
     if(!buffer) return;
     await navigator.clipboard.writeText(buffer);
@@ -312,7 +310,6 @@ document.getElementById("back").onclick = backspace;
 document.getElementById("shift").onclick = toggleShift;
 document.getElementById("caps").onclick = toggleCaps;
 document.getElementById("space").onclick = insertSpace;
-
 document.getElementById("enter").onclick = ()=>{
     buffer += "\n";
     render();
