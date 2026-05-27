@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Keyboard Bahasa Sangihe</title>
 
@@ -17,111 +17,8 @@ body{
     margin:0;
     padding:12px;
     background:#f0f2f5;
-    font-family:"Noto Sans", Arial, sans-serif;
-}
-
-.container{
-    max-width:480px;
-    margin:0 auto;
-    background:#fff;
-    border-radius:12px;
-    padding:14px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
-}
-
-h2{
-    margin:0 0 10px 0;
-    font-size:20px;
-    text-align:center;
-}
-
-/* TEXTAREA */
-#textarea{
-    width:100%;
-    min-height:180px;
-    padding:12px;
-    border:2px solid #ccd0d5;
-    border-radius:10px;
-    font-size:22px;
-    resize:none;
-    outline:none;
-    font-family:"Noto Sans", Arial, sans-serif;
-}
-
-/* ACTION BUTTONS */
-.actions{
-    display:flex;
-    gap:8px;
-    margin-top:8px;
-}
-
-.action-btn{
-    flex:1;
-    height:42px;
-    border:none;
-    border-radius:8px;
-    font-weight:600;
-    font-size:14px;
-    cursor:pointer;
-    background:#e9ecef;
-}
-
-.copy-btn{
-    background:#4dabf7;
-    color:#fff;
-}
-
-/* KEYBOARD */
-.keyboard{
-    margin-top:14px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.row{
-    display:grid;
-    gap:6px;
-}
-
-.row10{
-    grid-template-columns:repeat(10, 1fr);
-}
-
-/* 5 keys row (Shift Caps Space . Enter) */
-.row5{
-    grid-template-columns:1fr 1fr 2.5fr 0.8fr 1.4fr;
-}
-
-.key{
-    height:54px;
-    border:none;
-    border-radius:10px;
-    background:#fff;
-    box-shadow:0 2px 4px rgba(0,0,0,0.12);
-    font-size:18px;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:"Noto Sans", Arial, sans-serif;
-}
-
-.key:active{
-    transform:scale(0.97);
-}
-
-.special{ background:#dee2e6; }
-.lock{ background:#228be6; color:#fff; }
-
-.footer{
-    margin-top:14px;
-    font-size:11px;
-    text-align:center;
-    color:#666;
-}
-
-</style>
+    font
+    </style>
 </head>
 
 <body>
@@ -130,11 +27,18 @@ h2{
 
 <h2>Keyboard Bahasa Sangihe</h2>
 
-<textarea id="textarea"></textarea>
+<textarea id="textarea"
+readonly
+inputmode="none"
+spellcheck="false"
+autocomplete="off"
+autocorrect="off"
+autocapitalize="off"
+></textarea>
 
 <div class="actions">
-    <button class="action-btn" id="clear">Hapus semua</button>
-    <button class="action-btn copy-btn" id="copy">Salin semua</button>
+    <button id="clear">Hapus semua</button>
+    <button id="copy">Salin semua</button>
 </div>
 
 <div class="keyboard">
@@ -150,7 +54,7 @@ h2{
 <button class="key letter" data-low=";" data-upp=":">;</button>
 <button class="key letter" data-low="'" data-upp='"'>'</button>
 <button class="key letter" data-low="/" data-upp="?">/</button>
-<button class="key special" id="back">⌫</button>
+<button id="back">⌫</button>
 </div>
 
 <!-- ROW 2 -->
@@ -211,121 +115,83 @@ h2{
 
 <!-- ROW 6 -->
 <div class="row row5">
-
-<button class="key special" id="shift">Shift</button>
-<button class="key special" id="caps">Caps</button>
-
-<button class="key" id="space">Space</button>
-
+<button id="shift">Shift</button>
+<button id="caps">Caps</button>
+<button id="space">Space</button>
 <button class="key letter" data-low="." data-upp=">">.</button>
-
-<button class="key special" id="enter">Enter</button>
-
-</div>
-
-</div>
-
-<div class="footer">
-© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
+<button id="enter">Enter</button>
 </div>
 
 </div>
 
 <script>
 
-const textarea = document.getElementById("textarea");
+const ta = document.getElementById("textarea");
 
 let shift = false;
 let caps = false;
 
-function isUpper(){
+function upper(){
     return shift || caps;
 }
 
-function updateKeys(){
+function update(){
 
-    const upper = isUpper();
-
-    document.querySelectorAll(".letter").forEach(btn=>{
-        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
+    document.querySelectorAll(".letter").forEach(b=>{
+        b.textContent = upper() ? b.dataset.upp : b.dataset.low;
     });
-
-    document.getElementById("shift").classList.toggle("lock", shift);
-    document.getElementById("caps").classList.toggle("lock", caps);
 
     document.getElementById("space").textContent =
-        upper ? "Tab" : "Space";
+        upper() ? "Tab" : "Space";
 }
 
-function insert(char){
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    textarea.setRangeText(char, start, end, "end");
-
+function insert(ch){
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
+    ta.setRangeText(ch, s, e, "end");
     shift = false;
-    updateKeys();
-
-    textarea.focus();
+    update();
 }
 
-function backspace(){
+function back(){
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if(start !== end){
-        textarea.setRangeText("", start, end, "end");
-        return;
+    if(s !== e){
+        ta.setRangeText("", s, e);
+    }else{
+        ta.setRangeText("", s-1, s);
     }
-
-    textarea.setRangeText(
-        "",
-        start - 1,
-        start,
-        "end"
-    );
 }
 
-function toggleShift(){
-    shift = !shift;
-    updateKeys();
-}
-
-function toggleCaps(){
-    caps = !caps;
-    updateKeys();
-}
-
-function insertSpace(){
-    insert(isUpper() ? "\t" : " ");
-}
-
-document.querySelectorAll(".letter").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-        insert(isUpper() ? btn.dataset.upp : btn.dataset.low);
-    });
+document.querySelectorAll(".letter").forEach(b=>{
+    b.onclick = ()=>{
+        insert(upper() ? b.dataset.upp : b.dataset.low);
+    };
 });
 
-document.getElementById("back").onclick = backspace;
-document.getElementById("shift").onclick = toggleShift;
-document.getElementById("caps").onclick = toggleCaps;
-document.getElementById("space").onclick = insertSpace;
+document.getElementById("shift").onclick = ()=>{ shift = !shift; update(); };
+document.getElementById("caps").onclick = ()=>{ caps = !caps; update(); };
+
+document.getElementById("space").onclick = ()=>{
+    insert(upper() ? "\t" : " ");
+};
+
+document.getElementById("back").onclick = back;
 
 document.getElementById("enter").onclick = ()=>{
     insert("\n");
 };
 
 document.getElementById("clear").onclick = ()=>{
-    textarea.value = "";
+    ta.value = "";
 };
 
 document.getElementById("copy").onclick = async ()=>{
-    await navigator.clipboard.writeText(textarea.value);
+    await navigator.clipboard.writeText(ta.value);
 };
 
-updateKeys();
+update();
 
 </script>
 
