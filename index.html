@@ -33,10 +33,8 @@ h2{
     margin:0 0 10px 0;
     font-size:20px;
     text-align:center;
-    font-family:"Noto Sans", Arial, sans-serif;
 }
 
-/* DISPLAY */
 #display{
     width:100%;
     min-height:180px;
@@ -46,6 +44,29 @@ h2{
     font-size:24px;
     white-space:pre-wrap;
     font-family:"Noto Sans", Arial, sans-serif;
+}
+
+/* ACTION BUTTONS */
+.actions{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.action-btn{
+    flex:1;
+    height:42px;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    background:#e9ecef;
+}
+
+.action-btn.copy{
+    background:#4dabf7;
+    color:white;
 }
 
 /* KEYBOARD */
@@ -65,7 +86,6 @@ h2{
     grid-template-columns:repeat(10, 1fr);
 }
 
-/* Shift / Caps / Space / . / Enter / Copy */
 .row6{
     grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr 1.4fr;
 }
@@ -81,7 +101,6 @@ h2{
     display:flex;
     align-items:center;
     justify-content:center;
-
     font-family:"Noto Sans", Arial, sans-serif;
 }
 
@@ -98,7 +117,6 @@ h2{
     font-size:11px;
     text-align:center;
     color:#666;
-    font-family:"Noto Sans", Arial, sans-serif;
 }
 
 </style>
@@ -111,6 +129,12 @@ h2{
 <h2>Keyboard Bahasa Sangihe</h2>
 
 <div id="display"></div>
+
+<!-- ★ 追加ボタン群 -->
+<div class="actions">
+    <button class="action-btn" id="clear">Hapus semua</button>
+    <button class="action-btn copy" id="copyAll">Salin semua</button>
+</div>
 
 <div class="keyboard">
 
@@ -195,14 +219,14 @@ h2{
 <button class="key letter" data-low="." data-upp=">">.</button>
 
 <button class="key special" id="enter">Enter</button>
-<button class="key action" id="copy">Copy</button>
+<button class="key action">Copy</button>
 
 </div>
 
 </div>
 
 <div class="footer">
-© 2026 Takashi NAKAGAWA
+© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
 </div>
 
 </div>
@@ -214,7 +238,6 @@ let shift = false;
 let caps = false;
 
 const display = document.getElementById("display");
-const spaceBtn = document.getElementById("space");
 
 function isUpper(){
     return shift || caps;
@@ -235,16 +258,13 @@ function updateKeys(){
     document.getElementById("shift").classList.toggle("lock", shift);
     document.getElementById("caps").classList.toggle("lock", caps);
 
-    spaceBtn.textContent = upper ? "Tab" : "Space";
+    document.getElementById("space").textContent =
+        upper ? "Tab" : "Space";
 }
 
 function insert(btn){
-
-    const upper = isUpper();
-    buffer += upper ? btn.dataset.upp : btn.dataset.low;
-
+    buffer += isUpper() ? btn.dataset.upp : btn.dataset.low;
     shift = false;
-
     updateKeys();
     render();
 }
@@ -271,6 +291,19 @@ function insertSpace(){
     render();
 }
 
+/* ★ 全削除 */
+function clearAll(){
+    buffer = "";
+    render();
+}
+
+/* ★ 全コピー */
+async function copyAll(){
+    if(!buffer) return;
+    await navigator.clipboard.writeText(buffer);
+}
+
+/* EVENTS */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
@@ -285,9 +318,8 @@ document.getElementById("enter").onclick = ()=>{
     render();
 };
 
-document.getElementById("copy").onclick = async ()=>{
-    await navigator.clipboard.writeText(buffer);
-};
+document.getElementById("clear").onclick = clearAll;
+document.getElementById("copyAll").onclick = copyAll;
 
 updateKeys();
 render();
