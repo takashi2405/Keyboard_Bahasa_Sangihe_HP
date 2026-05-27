@@ -35,25 +35,17 @@ h2{
     text-align:center;
 }
 
-/* DISPLAY */
 #display{
     width:100%;
     min-height:180px;
     padding:12px;
-
     border:2px solid #ccd0d5;
     border-radius:10px;
-
     font-size:24px;
-    line-height:1.5;
-
     white-space:pre-wrap;
-    word-break:break-word;
-
     font-family:"Noto Sans", sans-serif;
 }
 
-/* KEYBOARD */
 .keyboard{
     margin-top:14px;
     display:flex;
@@ -70,9 +62,8 @@ h2{
     grid-template-columns:repeat(10, 1fr);
 }
 
-/* 6列構造（Space, ., Enter 含む） */
 .row6{
-    grid-template-columns:1.2fr 1.2fr 2.2fr 0.8fr 1.6fr 1.6fr;
+    grid-template-columns:1.2fr 1.2fr 2.6fr 1.4fr 1.4fr;
 }
 
 .key{
@@ -86,12 +77,9 @@ h2{
     display:flex;
     align-items:center;
     justify-content:center;
-    user-select:none;
 }
 
-.key:active{
-    transform:scale(0.97);
-}
+.key:active{ transform:scale(0.97); }
 
 .special{ background:#dee2e6; }
 .action{ background:#4dabf7; color:#fff; }
@@ -179,10 +167,7 @@ h2{
 <button class="key letter" data-low="n" data-upp="N">n</button>
 <button class="key letter" data-low="m" data-upp="M">m</button>
 <button class="key letter" data-low="l᷊" data-upp="L᷊">l᷊</button>
-
 <button class="key letter" data-low="," data-upp="<">,</button>
-
-<!-- ピリオド削除済み（ここから移動） -->
 
 </div>
 
@@ -192,10 +177,6 @@ h2{
 <button class="key special" id="shift">Shift</button>
 <button class="key special" id="caps">Caps</button>
 <button class="key" id="space">Space</button>
-
-<!-- ★ ピリオド移動 -->
-<button class="key letter" data-low="." data-upp=">">.</button>
-
 <button class="key special" id="enter">Enter</button>
 <button class="key action" id="copy">Copy</button>
 
@@ -207,45 +188,41 @@ h2{
 
 <script>
 
-/* ===== STATE ===== */
+/* STATE */
 let buffer = "";
 let shift = false;
 let caps = false;
 
+/* DISPLAY */
 const display = document.getElementById("display");
 
-/* ===== RENDER ===== */
 function render(){
     display.textContent = buffer || " ";
 }
 
-/* ===== KEY UPDATE ===== */
+/* KEY UPDATE */
 function updateKeys(){
 
     const upper = shift || caps;
 
     document.querySelectorAll(".letter").forEach(btn=>{
-        btn.textContent =
-            upper ? btn.dataset.upp : btn.dataset.low;
+        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
     });
 
-    document.getElementById("shift")
-        .classList.toggle("lock", shift);
+    document.getElementById("shift").classList.toggle("lock", shift);
+    document.getElementById("caps").classList.toggle("lock", caps);
 
-    document.getElementById("caps")
-        .classList.toggle("lock", caps);
+    /* ★ SPACE/TAB切替 */
+    const spaceBtn = document.getElementById("space");
+    spaceBtn.textContent = upper ? "Tab" : "Space";
 }
 
-/* ===== INSERT ===== */
+/* INSERT */
 function insert(btn){
 
     const upper = shift || caps;
 
-    const ch = upper
-        ? btn.dataset.upp
-        : btn.dataset.low;
-
-    buffer += ch;
+    buffer += upper ? btn.dataset.upp : btn.dataset.low;
 
     shift = false;
 
@@ -253,67 +230,58 @@ function insert(btn){
     render();
 }
 
-/* ===== BACKSPACE ===== */
+/* BACKSPACE */
 function backspace(){
     buffer = buffer.slice(0, -1);
     render();
 }
 
-/* ===== SHIFT ===== */
+/* SHIFT */
 function toggleShift(){
     shift = !shift;
     updateKeys();
 }
 
-/* ===== CAPS ===== */
+/* CAPS */
 function toggleCaps(){
     caps = !caps;
     updateKeys();
 }
 
-/* ===== SPACE / TAB ===== */
+/* SPACE / TAB */
 function insertSpaceOrTab(){
-    const isTab = shift || caps;
-    buffer += isTab ? "    " : " ";
+
+    const upper = shift || caps;
+
+    buffer += upper ? "\t" : " ";
+
     shift = false;
+
     updateKeys();
     render();
 }
 
-/* ===== COPY ===== */
+/* COPY */
 async function copy(){
-    try{
-        await navigator.clipboard.writeText(buffer);
-    }catch(e){
-        console.error(e);
-    }
+    await navigator.clipboard.writeText(buffer);
 }
 
-/* ===== EVENTS ===== */
+/* EVENTS */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
 
-document.getElementById("back")
-.addEventListener("click", backspace);
+document.getElementById("back").onclick = backspace;
+document.getElementById("shift").onclick = toggleShift;
+document.getElementById("caps").onclick = toggleCaps;
+document.getElementById("space").onclick = insertSpaceOrTab;
 
-document.getElementById("shift")
-.addEventListener("click", toggleShift);
-
-document.getElementById("caps")
-.addEventListener("click", toggleCaps);
-
-document.getElementById("space")
-.addEventListener("click", insertSpaceOrTab);
-
-document.getElementById("enter")
-.addEventListener("click", ()=>{
+document.getElementById("enter").onclick = ()=>{
     buffer += "\n";
     render();
-});
+};
 
-document.getElementById("copy")
-.addEventListener("click", copy);
+document.getElementById("copy").onclick = copy;
 
 updateKeys();
 render();
