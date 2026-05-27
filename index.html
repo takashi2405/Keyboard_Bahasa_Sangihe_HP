@@ -37,18 +37,13 @@ h2{
 }
 
 #display{
-/* TEXTAREA */
-#textarea{
     width:100%;
     min-height:180px;
     padding:12px;
     border:2px solid #ccd0d5;
     border-radius:10px;
-    font-size:20px;
+    font-size:24px;
     white-space:pre-wrap;
-    font-size:22px;
-    resize:none;
-    outline:none;
     font-family:"Noto Sans", Arial, sans-serif;
 }
 
@@ -73,7 +68,6 @@ h2{
 .copy-btn{
     background:#4dabf7;
     color:white;
-    color:#fff;
 }
 
 /* KEYBOARD */
@@ -95,9 +89,6 @@ h2{
 
 .row6{
     grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr; /* ★ Copy削除で5列 */
-/* 5 keys row (Shift Caps Space . Enter) */
-.row5{
-    grid-template-columns:1fr 1fr 2.5fr 0.8fr 1.4fr;
 }
 
 .key{
@@ -139,13 +130,11 @@ h2{
 <h2>Keyboard Bahasa Sangihe</h2>
 
 <div id="display"></div>
-<textarea id="textarea"></textarea>
 
 <!-- ACTION -->
 <div class="actions">
     <button class="action-btn" id="clear">Hapus semua</button>
     <button class="action-btn copy-btn" id="copyAll">Salin semua</button>
-    <button class="action-btn copy-btn" id="copy">Salin semua</button>
 </div>
 
 <div class="keyboard">
@@ -222,7 +211,6 @@ h2{
 
 <!-- ROW 6 -->
 <div class="row row6">
-<div class="row row5">
 
 <button class="key special" id="shift">Shift</button>
 <button class="key special" id="caps">Caps</button>
@@ -238,6 +226,7 @@ h2{
 </div>
 
 <div class="footer">
+© 2026 Takashi NAKAGAWA · Licensed under GNU GPL v3.0 or later
 © 2026 Takashi NAKAGAWA
 </div>
 
@@ -246,8 +235,6 @@ h2{
 <script>
 
 let buffer = "";
-const textarea = document.getElementById("textarea");
-
 let shift = false;
 let caps = false;
 
@@ -278,38 +265,14 @@ function updateKeys(){
 
 function insert(btn){
     buffer += isUpper() ? btn.dataset.upp : btn.dataset.low;
-function insert(char){
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    textarea.setRangeText(char, start, end, "end");
-
     shift = false;
     updateKeys();
     render();
-
-    textarea.focus();
 }
 
 function backspace(){
     buffer = buffer.slice(0, -1);
     render();
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if(start !== end){
-        textarea.setRangeText("", start, end, "end");
-        return;
-    }
-
-    textarea.setRangeText(
-        "",
-        start - 1,
-        start,
-        "end"
-    );
 }
 
 function toggleShift(){
@@ -337,37 +300,24 @@ function clearAll(){
 async function copyAll(){
     if(!buffer) return;
     await navigator.clipboard.writeText(buffer);
-    insert(isUpper() ? "\t" : " ");
 }
 
 /* EVENTS */
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
-    btn.addEventListener("click", ()=>{
-        insert(isUpper() ? btn.dataset.upp : btn.dataset.low);
-    });
 });
 
 document.getElementById("back").onclick = backspace;
 document.getElementById("shift").onclick = toggleShift;
 document.getElementById("caps").onclick = toggleCaps;
 document.getElementById("space").onclick = insertSpace;
-
 document.getElementById("enter").onclick = ()=>{
     buffer += "\n";
     render();
-    insert("\n");
 };
 
 document.getElementById("clear").onclick = clearAll;
 document.getElementById("copyAll").onclick = copyAll;
-document.getElementById("clear").onclick = ()=>{
-    textarea.value = "";
-};
-
-document.getElementById("copy").onclick = async ()=>{
-    await navigator.clipboard.writeText(textarea.value);
-};
 
 updateKeys();
 render();
