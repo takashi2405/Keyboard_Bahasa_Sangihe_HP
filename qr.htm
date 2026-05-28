@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangihe Keyboard QR Codes</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f4f6f9;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        /* 全体を囲むコンテナ */
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px; /* 💡 2つのボックスの間の隙間を設定 */
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        /* 各QRコードのカード風ボックス */
+        .qr-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            width: 280px; /* ボックスの幅 */
+            box-sizing: border-box;
+        }
+        /* QRコード画像 */
+        .qr-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        /* バージョン名の見出し */
+        .version-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #444;
+            margin: 10px 0;
+        }
+        /* リンクボタン */
+        .qr-card a {
+            display: block;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            word-break: break-all;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .qr-card a:hover {
+            background-color: #004da6;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Keyboard Virtual Bahasa Sangihe</h1>
+
+<div class="wrapper">
+
+    <div class="qr-card">
+        <div class="version-title">Untuk HP & Tablet</div>
+        <img src="qrcode-hp.png" alt="QR Code HP">
+        <a href="https://tinyurl.com/kb-sangihe-hp" target="_blank">https://tinyurl.com/kb-sangihe-hp</a>
+    </div>
+
+    <div class="qr-card">
+        <div class="version-title">Untuk PC</div>
+        <img src="qrcode-pc.png" alt="QR Code PC">
+        <a href="https://tinyurl.com/kb-sangihe-pc" target="_blank">https://tinyurl.com/kb-sangihe-pc</a>
+    </div>
+
+</div>
+
+</body>
+</html>
