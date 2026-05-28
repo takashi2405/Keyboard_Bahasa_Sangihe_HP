@@ -38,17 +38,17 @@ h2{
     text-align:center;
 }
 
-/* TEXTAREA (OS-native editing enabled) */
+/* ===== TEXT AREA (readOnly + OS keyboard suppressed) ===== */
+
 #display{
     flex:1;
     width:100%;
-    min-height:100px;
     padding:10px;
+
+    font-size:20px;
 
     border:2px solid #ccd0d5;
     border-radius:10px;
-
-    font-size:20px;
 
     overflow-y:auto;
     overflow-wrap:anywhere;
@@ -58,17 +58,18 @@ h2{
 
     -webkit-user-select:text;
     user-select:text;
+
     -webkit-touch-callout:default;
 
     font-family:"Noto Sans", Arial, sans-serif;
 }
 
-/* ACTIONS */
+/* ===== ACTIONS ===== */
+
 .actions{
     display:flex;
     gap:5px;
-    margin-top:6px;
-    margin-bottom:6px;
+    margin:6px 0;
 }
 
 .action-btn{
@@ -78,16 +79,16 @@ h2{
     border-radius:8px;
     font-weight:600;
     font-size:14px;
-    cursor:pointer;
     background:#e9ecef;
 }
 
 .copy-btn{
     background:#4dabf7;
-    color:white;
+    color:#fff;
 }
 
-/* KEYBOARD */
+/* ===== KEYBOARD ===== */
+
 .keyboard{
     display:flex;
     flex-direction:column;
@@ -109,7 +110,8 @@ h2{
     grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr;
 }
 
-/* KEYS */
+/* ===== KEYS ===== */
+
 .key{
     height:43px;
     font-size:17px;
@@ -118,8 +120,6 @@ h2{
     display:flex;
     align-items:center;
     justify-content:center;
-
-    font-family:"Noto Sans", Arial, sans-serif;
 
     border-radius:8px;
 
@@ -144,14 +144,13 @@ h2{
     color:#fff;
 }
 
-/* FOOTER */
+/* ===== FOOTER ===== */
+
 .footer{
     margin-top:6px;
     font-size:10px;
     text-align:center;
     color:#666;
-    flex-shrink:0;
-    padding-bottom:2px;
 }
 
 </style>
@@ -163,14 +162,8 @@ h2{
 
 <h2>Keyboard Bahasa Sangihe</h2>
 
-<textarea
-    id="display"
-    autocorrect="off"
-    autocomplete="off"
-    autocapitalize="off"
-    spellcheck="false"></textarea>
+<textarea id="display" readonly></textarea>
 
-<!-- ACTION -->
 <div class="actions">
     <button class="action-btn" id="clear">Hapus semua</button>
     <button class="action-btn copy-btn" id="copyAll">Salin semua</button>
@@ -281,7 +274,6 @@ function isUpper(){
     return shift || caps;
 }
 
-/* KEY UPDATE */
 function updateKeys(){
 
     const upper = isUpper();
@@ -297,41 +289,50 @@ function updateKeys(){
         upper ? "Tab" : "Space";
 }
 
-/* INSERT (OS-native editing) */
-function insert(btn){
+/* ===== INSERT ===== */
 
-    const text = isUpper()
-        ? btn.dataset.upp
-        : btn.dataset.low;
+function insertChar(char){
 
     const start = display.selectionStart;
     const end = display.selectionEnd;
 
-    display.setRangeText(text, start, end, "end");
+    const text = display.value;
 
-    shift = false;
+    display.value =
+        text.slice(0, start) +
+        char +
+        text.slice(end);
 
-    updateKeys();
+    display.selectionStart = display.selectionEnd = start + char.length;
 
     display.focus();
 }
 
-/* BACKSPACE */
+/* KEY INPUT */
+
+function insert(btn){
+    const char = isUpper() ? btn.dataset.upp : btn.dataset.low;
+    insertChar(char);
+    shift = false;
+    updateKeys();
+}
+
 function backspace(){
 
     const start = display.selectionStart;
     const end = display.selectionEnd;
 
     if(start !== end){
-        display.setRangeText("", start, end, "end");
-    }else{
-        display.setRangeText("", start - 1, start, "end");
+        insertChar(""); // delete selection
+    }else if(start > 0){
+        const text = display.value;
+        display.value = text.slice(0, start - 1) + text.slice(end);
+        display.selectionStart = display.selectionEnd = start - 1;
     }
 
     display.focus();
 }
 
-/* MODES */
 function toggleShift(){
     shift = !shift;
     updateKeys();
@@ -342,35 +343,24 @@ function toggleCaps(){
     updateKeys();
 }
 
-/* SPACE */
 function insertSpace(){
-
-    const text = isUpper() ? "\t" : " ";
-
-    const start = display.selectionStart;
-    const end = display.selectionEnd;
-
-    display.setRangeText(text, start, end, "end");
-
+    insertChar(isUpper() ? "\t" : " ");
     shift = false;
-
     updateKeys();
-
-    display.focus();
 }
 
-/* CLEAR */
-function clearAll(){
+/* ACTIONS */
+
+document.getElementById("clear").onclick = ()=>{
     display.value = "";
-}
+};
 
-/* COPY */
-async function copyAll(){
-    if(!display.value) return;
+document.getElementById("copyAll").onclick = async ()=>{
     await navigator.clipboard.writeText(display.value);
-}
+};
 
 /* EVENTS */
+
 document.querySelectorAll(".letter").forEach(btn=>{
     btn.addEventListener("click", ()=>insert(btn));
 });
@@ -381,16 +371,9 @@ document.getElementById("caps").onclick = toggleCaps;
 document.getElementById("space").onclick = insertSpace;
 
 document.getElementById("enter").onclick = ()=>{
-    const start = display.selectionStart;
-    const end = display.selectionEnd;
-    display.setRangeText("\n", start, end, "end");
-    display.focus();
+    insertChar("\n");
 };
 
-document.getElementById("clear").onclick = clearAll;
-document.getElementById("copyAll").onclick = copyAll;
-
-/* init */
 updateKeys();
 
 </script>
