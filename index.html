@@ -2,191 +2,196 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Keyboard Bahasa Sangihe</title>
 
 <style>
+* { box-sizing: border-box; }
 
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+body {
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Noto Sans", Arial, sans-serif;
+  background-color: #777777;
 }
 
-body{
-    margin:0;
-    padding:0;
-    background:#f0f2f5;
-    font-family:"Noto Sans", Arial, sans-serif;
-    height:100dvh;
-    overflow:hidden;
+.header {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  width: 100% !important;
 }
 
-.container{
-    width:100%;
-    height:100dvh;
-    display:flex;
-    flex-direction:column;
-    background:#fff;
-    padding:6px;
-    overflow:hidden;
+h2 {
+  margin: 0 !important;
+  font-size: min(18px, 4.5vw) !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  flex: 1 !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
 }
 
-h2{
-    margin:0 0 6px 0;
-    font-size:18px;
-    text-align:center;
+.header-copyright {
+  font-size: 10px !important;
+  color: #ffffff !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* ===== TEXT AREA (readOnly + OS keyboard suppressed) ===== */
-
-#display{
-    flex:1;
-    width:100%;
-    padding:10px;
-
-    font-size:20px;
-
-    border:2px solid #ccd0d5;
-    border-radius:10px;
-
-    overflow-y:auto;
-    overflow-wrap:anywhere;
-
-    resize:none;
-    outline:none;
-
-    -webkit-user-select:text;
-    user-select:text;
-
-    -webkit-touch-callout:default;
-
-    font-family:"Noto Sans", Arial, sans-serif;
+#clearAllTop {
+  position: static !important;
+  padding: 12px 10px !important;
+  border: 0px solid #ccc !important;
+  border-radius: 6px !important;
+  background: #f8f9fa !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+  flex-shrink: 0 !important;
+  width: fit-content !important;
 }
 
-/* ===== ACTIONS ===== */
-
-.actions{
-    display:flex;
-    gap:5px;
-    margin:6px 0;
+@media (min-width: 480px) {
+  h2 {
+    font-size: 18px !important;
+  }
+  #clearAllTop {
+    font-size: 12px !important;
+  }
 }
 
-.action-btn{
-    flex:1;
-    height:38px;
-    border:none;
-    border-radius:8px;
-    font-weight:600;
-    font-size:14px;
-    background:#e9ecef;
+#editor {
+  flex: 1;
+  margin: 6px;
+  padding: 10px;
+  border: 0px solid #ccc;
+  border-radius: 10px;
+  font-size: 20px;
+  white-space: pre-wrap;
+  overflow: auto;
+  word-break: break-word;
+  outline: none;
+  background-color: #ffffff;
+  color: #000000;
 }
 
-.copy-btn{
-    background:#4dabf7;
-    color:#fff;
+#caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.2em;
+  background: #000;
+  animation: blink 1.2s steps(1) infinite;
+  vertical-align: bottom;
 }
 
-/* ===== KEYBOARD ===== */
-
-.keyboard{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    margin-top:auto;
-    flex-shrink:0;
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
-.row{
-    display:grid;
-    gap:4px;
+.keyboard {
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.row10{
-    grid-template-columns:repeat(10, 1fr);
+.row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
 }
 
-.row6{
-    grid-template-columns:1fr 1fr 2.2fr 0.8fr 1.4fr;
+.key {
+  height: 42px;
+  border: 0px solid #ccc;
+  border-radius: 8px;
+  background: #f8f9fa;
+  font-weight: 600;
+  font-size: 14px;
+  user-select: none;
 }
 
-/* ===== KEYS ===== */
-
-.key{
-    height:43px;
-    font-size:17px;
-    font-weight:600;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:8px;
-
-    background:#f8f9fa;
-    border:1px solid #cfd4da;
-
-    box-shadow:
-        0 1px 2px rgba(0,0,0,0.12),
-        0 2px 6px rgba(0,0,0,0.08);
+.key.active {
+  background: #4dabf7;
+  color: #fff;
 }
 
-.key:active{
-    transform:scale(0.97);
+.key:active, #clearAllTop:active {
+  transform: scale(0.95);
+  background: #e0e0e0;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  border-color: #bbb;
 }
 
-.special{
-    background:#dee2e6;
+.key.active:active {
+  transform: none;
+  box-shadow: none;
 }
 
-.lock{
-    background:#228be6;
-    color:#fff;
+.row1 {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
 }
 
-/* ===== FOOTER ===== */
-
-.footer{
-    margin-top:6px;
-    font-size:10px;
-    text-align:center;
-    color:#666;
+.salins {
+  grid-column: span 4;
 }
 
+.arrow { grid-column: span 1; }
+.del { grid-column: span 2; }
+
+.row7 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr 1fr 2fr;
+  gap: 4px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h2>Keyboard Bahasa Sangihe</h2>
-
-<textarea id="display" readonly></textarea>
-
-<div class="actions">
-    <button class="action-btn" id="clear">Hapus semua</button>
-    <button class="action-btn copy-btn" id="copyAll">Salin semua</button>
+<div class="header">
+  <div style="display: flex; flex-direction: column; flex: 1;">
+    <h2>Keyboard Bahasa Sangihe</h2>
+    <div class="header-copyright">© 2026 Takashi NAKAGAWA [ver. 20260528]</div>
+  </div>
+  <button id="clearAllTop">Hapus Semua</button>
 </div>
+
+<div id="editor" contenteditable="true" inputmode="none"></div>
 
 <div class="keyboard">
 
-<!-- ROW 1 -->
-<div class="row row10">
+<div class="row row1">
+<button class="key salins" id="copyAll">Salin Semua</button>
+<button class="key arrow" id="left">←</button>
+<button class="key arrow" id="up">↑</button>
+<button class="key arrow" id="down">↓</button>
+<button class="key arrow" id="right">→</button>
+<button class="key del" id="del">Del</button>
+</div>
+
+<div class="row">
 <button class="key letter" data-low="́" data-upp="~">́</button>
 <button class="key letter" data-low="-" data-upp="_">-</button>
 <button class="key letter" data-low="=" data-upp="+">=</button>
 <button class="key letter" data-low="[" data-upp="{">[</button>
 <button class="key letter" data-low="]" data-upp="}">]</button>
-<button class="key letter" data-low="\" data-upp="|">\</button>
+<button class="key letter" data-low="&#x005C;" data-upp="|">&#x005C;</button>
 <button class="key letter" data-low=";" data-upp=":">;</button>
 <button class="key letter" data-low="'" data-upp='"'>'</button>
 <button class="key letter" data-low="/" data-upp="?">/</button>
-<button class="key special" id="back">⌫</button>
+<button class="key" id="backBtn">⌫</button>
 </div>
 
-<!-- ROW 2 -->
-<div class="row row10">
+<div class="row">
 <button class="key letter" data-low="1" data-upp="!">1</button>
 <button class="key letter" data-low="2" data-upp="@">2</button>
 <button class="key letter" data-low="3" data-upp="#">3</button>
@@ -199,8 +204,7 @@ h2{
 <button class="key letter" data-low="0" data-upp=")">0</button>
 </div>
 
-<!-- ROW 3 -->
-<div class="row row10">
+<div class="row">
 <button class="key letter" data-low="q" data-upp="Q">q</button>
 <button class="key letter" data-low="w" data-upp="W">w</button>
 <button class="key letter" data-low="e" data-upp="E">e</button>
@@ -213,8 +217,7 @@ h2{
 <button class="key letter" data-low="p" data-upp="P">p</button>
 </div>
 
-<!-- ROW 4 -->
-<div class="row row10">
+<div class="row">
 <button class="key letter" data-low="a" data-upp="A">a</button>
 <button class="key letter" data-low="s" data-upp="S">s</button>
 <button class="key letter" data-low="ĕ" data-upp="Ĕ">ĕ</button>
@@ -227,9 +230,8 @@ h2{
 <button class="key letter" data-low="l" data-upp="L">l</button>
 </div>
 
-<!-- ROW 5 -->
-<div class="row row10">
-<button class="key letter" data-low="̣" data-upp="̣">◌&#803;</button>
+<div class="row">
+<button class="key letter" data-low="&#x0323;" data-upp="&#x0323;">&#x25CC;&#x0323;</button>
 <button class="key letter" data-low="z" data-upp="Z">z</button>
 <button class="key letter" data-low="x" data-upp="X">x</button>
 <button class="key letter" data-low="c" data-upp="C">c</button>
@@ -241,141 +243,195 @@ h2{
 <button class="key letter" data-low="," data-upp="<">,</button>
 </div>
 
-<!-- ROW 6 -->
-<div class="row row6">
-
-<button class="key special" id="shift">Shift</button>
-<button class="key special" id="caps">Caps</button>
-
+<div class="row row7">
+<button class="key" id="shift">Shift</button>
+<button class="key" id="caps">Caps</button>
 <button class="key" id="space">Space</button>
-
 <button class="key letter" data-low="." data-upp=">">.</button>
-
-<button class="key special" id="enter">Enter</button>
-
-</div>
-
-</div>
-
-<div class="footer">
-© 2026 Takashi NAKAGAWA versi 20260528035
+<button class="key" id="enter">Enter</button>
 </div>
 
 </div>
 
 <script>
-
+let buf = "";
+let cur = 0;
 let shift = false;
 let caps = false;
 
-const display = document.getElementById("display");
+const ed = document.getElementById("editor");
+const segmenter = new Intl.Segmenter("id", { granularity: "grapheme" });
+
+function getGraphemes(text) {
+  return Array.from(segmenter.segment(text)).map(s => s.segment);
+}
 
 function isUpper(){
-    return shift || caps;
+  return shift ^ caps;
 }
 
-function updateKeys(){
+function render(){
+  ed.textContent = ""; 
 
-    const upper = isUpper();
+  const chars = getGraphemes(buf);
+  
+  ed.append(chars.slice(0, cur).join(""));
 
-    document.querySelectorAll(".letter").forEach(btn=>{
-        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
-    });
+  const caret = document.createElement("span");
+  caret.id = "caret";
+  ed.appendChild(caret);
 
-    document.getElementById("shift").classList.toggle("lock", shift);
-    document.getElementById("caps").classList.toggle("lock", caps);
+  ed.append(chars.slice(cur).join(""));
 
-    document.getElementById("space").textContent =
-        upper ? "Tab" : "Space";
+  document.querySelectorAll(".letter").forEach(k=>{
+    k.textContent = isUpper() ? k.dataset.upp : k.dataset.low;
+  });
+
+  document.getElementById("space").textContent = (shift || caps) ? "Tab" : "Space";
+  document.getElementById("shift").classList.toggle("active", shift);
+  document.getElementById("caps").classList.toggle("active", caps);
 }
 
-/* ===== INSERT ===== */
-
-function insertChar(char){
-
-    const start = display.selectionStart;
-    const end = display.selectionEnd;
-
-    const text = display.value;
-
-    display.value =
-        text.slice(0, start) +
-        char +
-        text.slice(end);
-
-    display.selectionStart = display.selectionEnd = start + char.length;
-
-    display.focus();
-}
-
-/* KEY INPUT */
-
-function insert(btn){
-    const char = isUpper() ? btn.dataset.upp : btn.dataset.low;
-    insertChar(char);
-    shift = false;
-    updateKeys();
+/* INPUT */
+function insert(v){
+  const chars = getGraphemes(buf);
+  chars.splice(cur, 0, v);
+  buf = chars.join("");
+  
+  cur++; 
+  if(shift) shift = false;
+  render();
 }
 
 function backspace(){
+  if(cur <= 0) return;
+  const chars = getGraphemes(buf);
+  chars.splice(cur - 1, 1);
+  buf = chars.join("");
+  cur--;
+  render();
+}
 
-    const start = display.selectionStart;
-    const end = display.selectionEnd;
+function delForward(){
+  const chars = getGraphemes(buf);
+  if(cur >= chars.length) return;
+  chars.splice(cur, 1);
+  buf = chars.join("");
+  render();
+}
 
-    if(start !== end){
-        insertChar(""); // delete selection
-    }else if(start > 0){
-        const text = display.value;
-        display.value = text.slice(0, start - 1) + text.slice(end);
-        display.selectionStart = display.selectionEnd = start - 1;
+/* CURSOR */
+function move(dir){
+  const chars = getGraphemes(buf);
+  
+  if(dir === "left") {
+    cur = Math.max(0, cur - 1);
+    render();
+    return;
+  }
+  if(dir === "right") {
+    cur = Math.min(chars.length, cur + 1);
+    render();
+    return;
+  }
+
+  const lines = []; 
+  const lineStartIndices = []; 
+  
+  let currentLine = [];
+  lineStartIndices.push(0);
+  
+  for(let i = 0; i < chars.length; i++) {
+    currentLine.push(chars[i]);
+    if(chars[i] === "\n") {
+      lines.push(currentLine);
+      currentLine = [];
+      lineStartIndices.push(i + 1);
     }
+  }
+  lines.push(currentLine); 
 
-    display.focus();
+  let currentLineIdx = 0;
+  let col = 0;
+  
+  for(let i = 0; i < lineStartIndices.length; i++) {
+    if(cur >= lineStartIndices[i]) {
+      currentLineIdx = i;
+      col = cur - lineStartIndices[i];
+    }
+  }
+
+  if(dir === "up"){
+    if(currentLineIdx === 0) return; 
+    let targetLineIdx = currentLineIdx - 1;
+    let maxCol = lines[targetLineIdx].length;
+    if(maxCol > 0 && lines[targetLineIdx][maxCol - 1] === "\n") maxCol--; 
+    
+    let targetCol = Math.min(col, maxCol);
+    cur = lineStartIndices[targetLineIdx] + targetCol;
+  }
+
+  if(dir === "down"){
+    if(currentLineIdx === lines.length - 1) return; 
+    let targetLineIdx = currentLineIdx + 1;
+    let maxCol = lines[targetLineIdx].length;
+    if(maxCol > 0 && lines[targetLineIdx][maxCol - 1] === "\n") maxCol--;
+
+    let targetCol = Math.min(col, maxCol);
+    cur = lineStartIndices[targetLineIdx] + targetCol;
+  }
+
+  render();
 }
-
-function toggleShift(){
-    shift = !shift;
-    updateKeys();
-}
-
-function toggleCaps(){
-    caps = !caps;
-    updateKeys();
-}
-
-function insertSpace(){
-    insertChar(isUpper() ? "\t" : " ");
-    shift = false;
-    updateKeys();
-}
-
-/* ACTIONS */
-
-document.getElementById("clear").onclick = ()=>{
-    display.value = "";
-};
-
-document.getElementById("copyAll").onclick = async ()=>{
-    await navigator.clipboard.writeText(display.value);
-};
 
 /* EVENTS */
-
-document.querySelectorAll(".letter").forEach(btn=>{
-    btn.addEventListener("click", ()=>insert(btn));
+document.querySelectorAll(".letter").forEach(k=>{
+  k.onclick = () => insert(isUpper() ? k.dataset.upp : k.dataset.low);
 });
 
-document.getElementById("back").onclick = backspace;
-document.getElementById("shift").onclick = toggleShift;
-document.getElementById("caps").onclick = toggleCaps;
-document.getElementById("space").onclick = insertSpace;
-
-document.getElementById("enter").onclick = ()=>{
-    insertChar("\n");
+document.getElementById("shift").onclick = () => {
+  shift = !shift;
+  render();
 };
 
-updateKeys();
+document.getElementById("caps").onclick = () => {
+  caps = !caps;
+  render();
+};
 
+document.getElementById("space").onclick = () => insert((shift || caps) ? "\t" : " ");
+document.getElementById("enter").onclick = () => insert("\n");
+
+document.getElementById("backBtn").onclick = backspace;
+document.getElementById("del").onclick = delForward;
+
+document.getElementById("left").onclick = () => move("left");
+document.getElementById("right").onclick = () => move("right");
+document.getElementById("up").onclick = () => move("up");
+document.getElementById("down").onclick = () => move("down");
+
+document.getElementById("copyAll").onclick = () => navigator.clipboard.writeText(buf);
+document.getElementById("clearAllTop").onclick = () => {
+  buf = ""; cur = 0; render();
+};
+
+document.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const pastedText = (e.clipboardData || window.clipboardData).getData("text");
+
+  if (pastedText) {
+    const chars = getGraphemes(buf);
+    const pastedChars = getGraphemes(pastedText);
+    
+    chars.splice(cur, 0, ...pastedChars);
+    buf = chars.join("");
+    
+    cur += pastedChars.length;
+    render();
+  }
+});
+
+render();
 </script>
 
 </body>
