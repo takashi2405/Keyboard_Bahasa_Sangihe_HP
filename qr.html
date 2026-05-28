@@ -9,44 +9,45 @@
             font-family: sans-serif;
             text-align: center;
             background-color: #f4f6f9;
-            padding: 40px 20px;
+            padding: 20px 15px; /* 💡 上下の余白を半分に縮小 */
             margin: 0;
         }
         h1 {
             color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
+            font-size: 20px; /* 💡 タイトルを少し小さくしてスペースを節約 */
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
         /* 全体を囲むコンテナ */
         .wrapper {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px; /* 💡 2つのボックスの間の隙間を設定 */
+            gap: 15px; /* 💡 ボックス同士の隙間を 30px → 15px に半減 */
             max-width: 900px;
             margin: 0 auto;
         }
         /* 各QRコードのカード風ボックス */
         .qr-card {
             background: white;
-            padding: 25px;
+            padding: 15px; /* 💡 ボックス内の余白を狭くして縦を縮小 */
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            width: 280px; /* ボックスの幅 */
+            width: 220px; /* 💡 全体サイズを元の約80%（280px → 220px）に縮小 */
             box-sizing: border-box;
         }
         /* QRコード画像 */
         .qr-card img {
             width: 100%;
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 8px; /* 💡 画像下の隙間を縮小 */
         }
         /* バージョン名の見出し */
         .version-title {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 15px; /* 💡 文字を少しだけシャープに */
             color: #444;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         /* リンクボタン */
         .qr-card a {
@@ -54,12 +55,12 @@
             background-color: #0066cc;
             color: white;
             text-decoration: none;
-            padding: 10px;
+            padding: 8px; /* 💡 ボタンの縦幅を少しスリムに */
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 12px; /* 💡 URL文字のサイズ調整 */
             font-weight: bold;
             word-break: break-all;
-            margin-top: 10px;
+            margin-top: 5px;
             transition: background 0.2s;
         }
         .qr-card a:hover {
