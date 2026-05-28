@@ -18,7 +18,6 @@ body{
     padding:0;
     background:#f0f2f5;
     font-family:"Noto Sans", Arial, sans-serif;
-
     height:100dvh;
     overflow:hidden;
 }
@@ -26,14 +25,10 @@ body{
 .container{
     width:100%;
     height:100dvh;
-
     display:flex;
     flex-direction:column;
-
     background:#fff;
-
     padding:6px;
-
     overflow:hidden;
 }
 
@@ -43,15 +38,11 @@ h2{
     text-align:center;
 }
 
-/* TEXT AREA */
-
+/* TEXTAREA (OS-native editing enabled) */
 #display{
     flex:1;
-
     width:100%;
-
     min-height:100px;
-
     padding:10px;
 
     border:2px solid #ccd0d5;
@@ -59,43 +50,35 @@ h2{
 
     font-size:20px;
 
-    white-space:pre-wrap;
-
     overflow-y:auto;
-
     overflow-wrap:anywhere;
 
     resize:none;
-
     outline:none;
+
+    -webkit-user-select:text;
+    user-select:text;
+    -webkit-touch-callout:default;
 
     font-family:"Noto Sans", Arial, sans-serif;
 }
 
-/* ACTION BUTTONS */
-
+/* ACTIONS */
 .actions{
     display:flex;
-
     gap:5px;
-
     margin-top:6px;
     margin-bottom:6px;
 }
 
 .action-btn{
     flex:1;
-
     height:38px;
-
     border:none;
     border-radius:8px;
-
     font-weight:600;
     font-size:14px;
-
     cursor:pointer;
-
     background:#e9ecef;
 }
 
@@ -105,15 +88,11 @@ h2{
 }
 
 /* KEYBOARD */
-
 .keyboard{
     display:flex;
     flex-direction:column;
-
     gap:4px;
-
     margin-top:auto;
-
     flex-shrink:0;
 }
 
@@ -131,10 +110,8 @@ h2{
 }
 
 /* KEYS */
-
 .key{
     height:43px;
-
     font-size:17px;
     font-weight:600;
 
@@ -147,7 +124,6 @@ h2{
     border-radius:8px;
 
     background:#f8f9fa;
-
     border:1px solid #cfd4da;
 
     box-shadow:
@@ -169,18 +145,12 @@ h2{
 }
 
 /* FOOTER */
-
 .footer{
     margin-top:6px;
-
     font-size:10px;
-
     text-align:center;
-
     color:#666;
-
     flex-shrink:0;
-
     padding-bottom:2px;
 }
 
@@ -282,7 +252,6 @@ h2{
 <div class="row row6">
 
 <button class="key special" id="shift">Shift</button>
-
 <button class="key special" id="caps">Caps</button>
 
 <button class="key" id="space">Space</button>
@@ -303,7 +272,6 @@ h2{
 
 <script>
 
-let buffer = "";
 let shift = false;
 let caps = false;
 
@@ -313,132 +281,117 @@ function isUpper(){
     return shift || caps;
 }
 
-function render(){
-    display.value = buffer;
-}
-
+/* KEY UPDATE */
 function updateKeys(){
 
     const upper = isUpper();
 
     document.querySelectorAll(".letter").forEach(btn=>{
-
-        btn.textContent =
-            upper
-            ? btn.dataset.upp
-            : btn.dataset.low;
-
+        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
     });
 
-    document.getElementById("shift")
-        .classList.toggle("lock", shift);
-
-    document.getElementById("caps")
-        .classList.toggle("lock", caps);
+    document.getElementById("shift").classList.toggle("lock", shift);
+    document.getElementById("caps").classList.toggle("lock", caps);
 
     document.getElementById("space").textContent =
         upper ? "Tab" : "Space";
 }
 
+/* INSERT (OS-native editing) */
 function insert(btn){
 
-    buffer += isUpper()
+    const text = isUpper()
         ? btn.dataset.upp
         : btn.dataset.low;
+
+    const start = display.selectionStart;
+    const end = display.selectionEnd;
+
+    display.setRangeText(text, start, end, "end");
 
     shift = false;
 
     updateKeys();
 
-    render();
+    display.focus();
 }
 
+/* BACKSPACE */
 function backspace(){
 
-    buffer = buffer.slice(0, -1);
+    const start = display.selectionStart;
+    const end = display.selectionEnd;
 
-    render();
+    if(start !== end){
+        display.setRangeText("", start, end, "end");
+    }else{
+        display.setRangeText("", start - 1, start, "end");
+    }
+
+    display.focus();
 }
 
+/* MODES */
 function toggleShift(){
-
     shift = !shift;
-
     updateKeys();
 }
 
 function toggleCaps(){
-
     caps = !caps;
-
     updateKeys();
 }
 
+/* SPACE */
 function insertSpace(){
 
-    buffer += isUpper()
-        ? "\t"
-        : " ";
+    const text = isUpper() ? "\t" : " ";
+
+    const start = display.selectionStart;
+    const end = display.selectionEnd;
+
+    display.setRangeText(text, start, end, "end");
 
     shift = false;
 
     updateKeys();
 
-    render();
+    display.focus();
 }
 
+/* CLEAR */
 function clearAll(){
-
-    buffer = "";
-
-    render();
+    display.value = "";
 }
 
+/* COPY */
 async function copyAll(){
-
-    if(!buffer) return;
-
-    await navigator.clipboard.writeText(buffer);
+    if(!display.value) return;
+    await navigator.clipboard.writeText(display.value);
 }
-
-/* 外部入力同期 */
-
-display.addEventListener("input", ()=>{
-
-    buffer = display.value;
-
-});
 
 /* EVENTS */
-
 document.querySelectorAll(".letter").forEach(btn=>{
-
     btn.addEventListener("click", ()=>insert(btn));
-
 });
 
 document.getElementById("back").onclick = backspace;
-
 document.getElementById("shift").onclick = toggleShift;
-
 document.getElementById("caps").onclick = toggleCaps;
-
 document.getElementById("space").onclick = insertSpace;
 
 document.getElementById("enter").onclick = ()=>{
-
-    buffer += "\n";
-
-    render();
+    const start = display.selectionStart;
+    const end = display.selectionEnd;
+    display.setRangeText("\n", start, end, "end");
+    display.focus();
 };
 
 document.getElementById("clear").onclick = clearAll;
-
 document.getElementById("copyAll").onclick = copyAll;
 
+/* init */
 updateKeys();
-
-render();
 
 </script>
 
