@@ -43,6 +43,8 @@ h2{
     text-align:center;
 }
 
+/* TEXT AREA */
+
 #display{
     flex:1;
 
@@ -61,8 +63,11 @@ h2{
 
     overflow-y:auto;
 
-    /* 自動折返し */
     overflow-wrap:anywhere;
+
+    resize:none;
+
+    outline:none;
 
     font-family:"Noto Sans", Arial, sans-serif;
 }
@@ -71,6 +76,7 @@ h2{
 
 .actions{
     display:flex;
+
     gap:5px;
 
     margin-top:6px;
@@ -140,13 +146,10 @@ h2{
 
     border-radius:8px;
 
-    /* 背景を少し暗く */
     background:#f8f9fa;
 
-    /* 境界線 */
     border:1px solid #cfd4da;
 
-    /* 影を強化 */
     box-shadow:
         0 1px 2px rgba(0,0,0,0.12),
         0 2px 6px rgba(0,0,0,0.08);
@@ -190,7 +193,12 @@ h2{
 
 <h2>Keyboard Bahasa Sangihe</h2>
 
-<div id="display"></div>
+<textarea
+    id="display"
+    autocorrect="off"
+    autocomplete="off"
+    autocapitalize="off"
+    spellcheck="false"></textarea>
 
 <!-- ACTION -->
 <div class="actions">
@@ -274,6 +282,7 @@ h2{
 <div class="row row6">
 
 <button class="key special" id="shift">Shift</button>
+
 <button class="key special" id="caps">Caps</button>
 
 <button class="key" id="space">Space</button>
@@ -305,7 +314,7 @@ function isUpper(){
 }
 
 function render(){
-    display.textContent = buffer;
+    display.value = buffer;
 }
 
 function updateKeys(){
@@ -313,12 +322,19 @@ function updateKeys(){
     const upper = isUpper();
 
     document.querySelectorAll(".letter").forEach(btn=>{
-        btn.textContent = upper ? btn.dataset.upp : btn.dataset.low;
+
+        btn.textContent =
+            upper
+            ? btn.dataset.upp
+            : btn.dataset.low;
+
     });
 
-    document.getElementById("shift").classList.toggle("lock", shift);
+    document.getElementById("shift")
+        .classList.toggle("lock", shift);
 
-    document.getElementById("caps").classList.toggle("lock", caps);
+    document.getElementById("caps")
+        .classList.toggle("lock", caps);
 
     document.getElementById("space").textContent =
         upper ? "Tab" : "Space";
@@ -384,6 +400,14 @@ async function copyAll(){
 
     await navigator.clipboard.writeText(buffer);
 }
+
+/* 外部入力同期 */
+
+display.addEventListener("input", ()=>{
+
+    buffer = display.value;
+
+});
 
 /* EVENTS */
 
